@@ -1,0 +1,8 @@
+/* Tipografías AUTOALOJADAS del Modelo Premium (subconjunto latino: cubre español).
+   Cormorant Garamond (títulos) e Inter (texto) — licencia SIL OFL 1.1, uso comercial libre.
+   Licencias en LICENSE-*.txt. Origen: paquetes npm @fontsource/* (mismos archivos de Google Fonts). */
+@font-face { font-family: "Cormorant Garamond"; font-style: normal; font-weight: 500; font-display: swap; src: url("cormorant-garamond-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Cormorant Garamond"; font-style: italic; font-weight: 500; font-display: swap; src: url("cormorant-garamond-latin-500-italic.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap; src: url("inter-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 500; font-display: swap; src: url("inter-latin-500-normal.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap; src: url("inter-latin-600-normal.woff2") format("woff2"); }

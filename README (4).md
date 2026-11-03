@@ -141,7 +141,7 @@ entero (desde `<article` hasta `</article>`).
 
 ### Agregar testimonios
 
-Mismo mecanismo, dentro de `.testimonials__grid`:
+La demo del Modelo A **no incluye testimonios ficticios**. Si el cliente entrega opiniones reales y autorizadas, se puede agregar la sección dentro de `.testimonials__grid`:
 
 ```html
 <blockquote class="testimonial-card reveal">
@@ -150,6 +150,8 @@ Mismo mecanismo, dentro de `.testimonials__grid`:
   <footer class="testimonial-card__author">— Nombre Apellido</footer>
 </blockquote>
 ```
+
+No inventar nombres, opiniones ni valoraciones.
 
 ### Cambiar el mapa
 
@@ -189,8 +191,9 @@ Checklist, en orden:
 3. **Reemplazar todas las fotos** de `img/` por fotos reales del
    negocio (ver los tamaños recomendados más arriba).
 4. **Reescribir los textos**: la bajada del Hero, la sección
-   "Nosotros", los 6 servicios/platos y los 3 testimonios — con
-   contenido real del cliente, no el de esta ferretería de ejemplo.
+   "Nosotros", los 6 servicios/platos y, solo si son reales y
+   autorizados, los testimonios — con contenido real del cliente, no el
+   de esta ferretería de ejemplo.
 5. **Actualizar el mapa** con la dirección real.
 6. **Actualizar los metadatos del `<head>`** (sección 4 de arriba) con
    el dominio real donde va a vivir el sitio.
