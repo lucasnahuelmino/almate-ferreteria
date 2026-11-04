@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- ALMATE:MODELO-D:SEO:START -->
+  <title>FREN Ferreterías | Catálogo de productos</title>
+  <meta name="description" content="Explorá el catálogo de productos de FREN Ferreterías y prepará una consulta.">
+  <meta name="theme-color" content="#171b20">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FREN Ferreterías | Catálogo de productos">
+  <meta property="og:description" content="Explorá el catálogo de productos de FREN Ferreterías y prepará una consulta.">
+  <meta property="og:site_name" content="FREN Ferreterías">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FREN Ferreterías | Catálogo de productos">
+  <meta name="twitter:description" content="Explorá el catálogo de productos de FREN Ferreterías y prepará una consulta.">
+  <link rel="preload" as="image" href="../img/hero-ferreteria.jpg" id="hero-preload">
+  <script type="application/ld+json" id="ld-json">{"@context":"https://schema.org","@type":"HardwareStore","name":"FREN Ferreterías","description":"Ferretería de barrio en Quilmes.","telephone":"(011) 4250-2865","email":"info@frenferreterias.com.ar","address":{"@type":"PostalAddress","streetAddress":"Andrés Baranda 1309","addressLocality":"Quilmes","addressRegion":"Buenos Aires","addressCountry":"AR"},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Saturday"],"opens":"08:00","closes":"13:00"}]}</script>
+  <!-- ALMATE:MODELO-D:SEO:END -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header" id="site-header">
+    <div class="header__utility">
+      <p id="header-utility">Quilmes · Lun a Sáb</p>
+      <p class="header__utility-mark" aria-hidden="true">ALMATE / 04</p>
+    </div>
+    <div class="header__inner">
+      <a class="brand js-brand" id="brand-link" href="#inicio" aria-label="FREN Ferreterías, inicio">
+        <span class="brand__mark" id="brand-short">FREN</span>
+        <span class="brand__text" id="brand-name">FREN Ferreterías</span>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <ul class="nav__list" id="nav-list"></ul>
+      </nav>
+      <div class="header__actions">
+        <div class="header__cta" id="header-cta"></div>
+        <button class="consultation-shortcut" id="consultation-shortcut" type="button" aria-label="Ver lista de consulta">
+          Mi consulta <span id="consultation-count" aria-live="polite">0</span>
+        </button>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript>
+      <p class="config-error" role="alert">Este sitio necesita JavaScript para mostrar su contenido. Escribinos por WhatsApp o teléfono mientras tanto.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="footer__hazard" aria-hidden="true"></div>
+    <div class="footer__inner">
+      <div class="footer__identity">
+        <a class="footer__brand js-brand" id="footer-brand" href="#inicio">FREN</a>
+        <p id="footer-description"></p>
+        <p class="footer__note" id="footer-note"></p>
+      </div>
+      <div class="footer__nav">
+        <h2 id="footer-nav-label">Navegación</h2>
+        <ul id="footer-nav"></ul>
+      </div>
+      <div class="footer__contact">
+        <h2 id="footer-contact-label">Contacto</h2>
+        <div id="footer-contact"></div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span id="footer-year"></span> <span id="footer-copyright">FREN Ferreterías</span>. <span id="footer-copyright-label">Todos los derechos reservados.</span></p>
+      <p><a id="footer-credit">Desarrollado por ALMATE · Soluciones digitales</a></p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Galería ampliada">
+    <div class="lightbox__bar">
+      <span class="lightbox__count" id="lightbox-count" aria-live="polite"></span>
+      <button class="lightbox__close" id="lightbox-close" type="button" aria-label="Cerrar galería">Cerrar ×</button>
+    </div>
+    <figure class="lightbox__figure">
+      <img id="lightbox-image" alt="">
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+    <div class="lightbox__controls">
+      <button class="lightbox__button" id="lightbox-prev" type="button" aria-label="Imagen anterior">← Anterior</button>
+      <button class="lightbox__button" id="lightbox-next" type="button" aria-label="Imagen siguiente">Siguiente →</button>
+    </div>
+  </dialog>
+
+  <dialog class="product-dialog" id="product-dialog" aria-labelledby="product-dialog-title">
+    <button class="product-dialog__close" id="product-dialog-close" type="button" aria-label="Cerrar ficha">Cerrar ×</button>
+    <div id="product-dialog-content"></div>
+  </dialog>
+
+  <script src="config.modelo-d.js" defer></script>
+  <script src="config-core.modelo-d.js" defer></script>
+  <script src="engine.modelo-d.js" defer></script>
+</body>
+</html>

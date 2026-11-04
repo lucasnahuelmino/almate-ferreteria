@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#145766">
+  <!-- Bloque SEO estático: se genera desde config.modelo-c.js con tools/sync-seo.js. -->
+  <!-- ALMATE:MODELO-C:SEO:START -->
+  <title>Tu marca | Soluciones y servicios</title>
+  <meta name="description" content="Información y contacto de Tu marca.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Tu marca | Soluciones y servicios">
+  <meta property="og:description" content="Información y contacto de Tu marca.">
+  <meta property="og:site_name" content="Tu marca">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Tu marca | Soluciones y servicios">
+  <meta name="twitter:description" content="Información y contacto de Tu marca.">
+  <!-- ALMATE:MODELO-C:SEO:END -->
+  <link rel="stylesheet" href="modelo-c.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <header class="site-header" id="site-header">
+    <div class="header__inner">
+      <a class="brand-link js-brand" id="brand-link" href="#inicio" aria-label="Tu marca, inicio">Tu marca</a>
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <ul id="nav-list"></ul>
+      </nav>
+      <div class="header__actions">
+        <div id="header-action"></div>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript><p class="config-error" role="alert">Este sitio necesita JavaScript para mostrar su contenido.</p></noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer__top">
+      <div class="footer__identity">
+        <a class="footer__brand js-brand" href="#inicio">Tu marca</a>
+        <p id="footer-description" hidden></p>
+      </div>
+      <nav class="footer__navigation" aria-label="Navegación del pie de página">
+        <h2 id="footer-nav-label">Navegación</h2>
+        <ul id="footer-nav"></ul>
+      </nav>
+      <div class="footer__contact">
+        <h2>Contacto</h2>
+        <div id="footer-contact"></div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span id="footer-year"></span> <span id="footer-copyright">Tu marca</span>. Todos los derechos reservados.</p>
+      <p><a id="footer-credit">Desarrollado por ALMATE · Soluciones digitales</a></p>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galería ampliada" aria-hidden="true" hidden>
+    <button class="lightbox__close" id="lightbox-close" type="button" aria-label="Cerrar imagen ampliada">×</button>
+    <button class="lightbox__previous" id="lightbox-prev" type="button" aria-label="Imagen anterior">‹</button>
+    <figure>
+      <img id="lightbox-image" src="" alt="">
+      <figcaption><span id="lightbox-caption"></span><span id="lightbox-count" aria-live="polite"></span></figcaption>
+    </figure>
+    <button class="lightbox__next" id="lightbox-next" type="button" aria-label="Imagen siguiente">›</button>
+  </div>
+
+  <script src="config.modelo-c.js"></script>
+  <script src="config-core.modelo-c.js"></script>
+  <script src="engine.modelo-c.js"></script>
+</body>
+</html>
