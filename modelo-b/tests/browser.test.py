@@ -1,5 +1,5 @@
 """Pruebas de navegador (Chromium + Playwright) de los Modelos A y B.
-Uso (desde la raíz del repo):  python3 premium/tests/browser.test.py
+Uso (desde la raíz del repo):  python modelo-b/tests/browser.test.py
 Levanta su propio servidor local. Requiere: pip install playwright && playwright install chromium"""
 import http.server, socketserver, threading, os, sys, json, functools, subprocess
 from playwright.sync_api import sync_playwright
@@ -35,7 +35,7 @@ def open_page(p, url, vp, mobile=False, cfg=None, append=None):
     return pg
 def hscroll(pg): return pg.evaluate("document.documentElement.scrollWidth>document.documentElement.clientWidth")
 def real_errors(pg): return [e for e in pg.errors if not ignore(e)] + pg.pageerrors
-B = BASE + "/premium/index.html"; A = BASE + "/index.html"
+B = BASE + "/modelo-b/index.html"; A = BASE + "/modelo-a/index.html"
 
 with sync_playwright() as p:
     print("\n[1-4] Modelos A y B · escritorio y móvil")
@@ -157,9 +157,9 @@ PREMIUM_CONFIG.gallery.items[0].src="//evil.com/x.png"; PREMIUM_CONFIG.gallery.i
     check("mapa: embedUrl https propio reemplaza al de Google", "openstreetmap.org" in pg.get_attribute("iframe", "src")); pg._b.close()
 
     print("\n[13] SEO estático")
-    r = subprocess.run(["node", os.path.join(ROOT, "premium/tools/sync-seo.js"), "--check"], capture_output=True, text=True)
+    r = subprocess.run(["node", os.path.join(ROOT, "modelo-b/tools/sync-seo.js"), "--check"], capture_output=True, text=True)
     check("sync-seo --check: head coincide con la config", r.returncode == 0, r.stdout + r.stderr)
-    html = open(os.path.join(ROOT, "premium/index.html"), encoding="utf-8").read()
+    html = open(os.path.join(ROOT, "modelo-b/index.html"), encoding="utf-8").read()
     check("HTML estático: title, description, og:title, twitter:card, preload y JSON-LD presentes", all(x in html for x in ("<title>FREN", 'name="description"', 'property="og:title"', 'name="twitter:card"', 'rel="preload" as="image"', 'application/ld+json')))
     check("HTML estático: sin canonical/og:image inventados (seo.url vacío)", 'rel="canonical"' not in html and 'og:image' not in html)
     pg = open_page(p, B, DESK)
@@ -168,8 +168,23 @@ PREMIUM_CONFIG.gallery.items[0].src="//evil.com/x.png"; PREMIUM_CONFIG.gallery.i
     check("head al día: el motor no avisa de desincronización", pg.evaluate("window.__PREMIUM_SEO_STALE__") == [] and not any("no coincide" in w for w in pg.warns)); pg._b.close()
     pg = open_page(p, B, DESK, append='PREMIUM_CONFIG.seo.title="Otro título";')
     check("head desactualizado: el motor avisa en consola", any("no coincide" in w and "title" in w for w in pg.warns), pg.warns[:2]); pg._b.close()
-    s = subprocess.run("cp premium/index.html /tmp/idx.bak && sed -i 's#<title>FREN#<title>XX#' premium/index.html && node premium/tools/sync-seo.js --check; echo $?; cp /tmp/idx.bak premium/index.html", shell=True, cwd=ROOT, capture_output=True, text=True)
-    check("sync-seo --check detecta un head alterado (exit 1) y se restauró", s.stdout.strip().endswith("1"), s.stdout)
+    # Portabilidad: el comando original usaba cp/sed que no existen en cmd.exe
+    # (Windows). Se hace lo mismo en Python: alterar el <head>, comprobar que
+    # --check sale con 1 y restaurar el archivo byte a byte.
+    idx_path = os.path.join(ROOT, "modelo-b", "index.html")
+    with open(idx_path, "rb") as fh:
+        original = fh.read()
+    altered = original.replace(b"<title>FREN", b"<title>XX", 1)
+    with open(idx_path, "wb") as fh:
+        fh.write(altered)
+    try:
+        s = subprocess.run(["node", os.path.join(ROOT, "modelo-b", "tools", "sync-seo.js"), "--check"], capture_output=True, text=True)
+        code, out = s.returncode, (s.stdout + s.stderr).strip()
+    finally:
+        with open(idx_path, "wb") as fh:
+            fh.write(original)
+    check("sync-seo --check detecta un head alterado (exit 1)", code == 1, f"exit={code} {out}")
+    check("index.html se restauró byte a byte", open(idx_path, "rb").read() == original)
 
     print("\n[14-15] Sin scroll horizontal ni errores JS en configuraciones extremas")
     long_txt = "Palabra" + "extremadamentelarga" * 12

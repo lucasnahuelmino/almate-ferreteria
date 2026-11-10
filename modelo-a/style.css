@@ -1,5 +1,5 @@
 /* ==========================================================================
-   FERRETERÍA EL YUNQUE — style.css
+   FREN FERRETERÍAS · MODELO A — style.css
 
      1. Variables (el "panel de control" visual del sitio)
      2. Reset básico
@@ -14,12 +14,13 @@
      11. Ubicación
      12. Footer + firma ALMATE
      13. Botón flotante de WhatsApp
+     14. Catálogo + lista de consulta
+     15. Accesibilidad: movimiento reducido
+     16. Aparición de elementos al hacer scroll
 
-   Todavía NO hay media queries de responsive "fino" (eso es la Etapa 3)
-   ni animaciones de scroll (eso es la Etapa 5). Lo que sí incluye este
-   archivo es un layout mobile-first funcional: en pantallas chicas todo
-   se apila en una columna, y a partir de cierto ancho pasamos a 2
-   columnas en las secciones que lo necesitan.
+   Layout mobile-first: en pantallas chicas todo se apila en una
+   columna, y a partir de cierto ancho pasamos a 2 o 3 columnas en
+   las secciones que lo necesitan.
    ========================================================================== */
 
 
@@ -29,25 +30,33 @@
    a una copia de esta plantilla para otro cliente/rubro.
    ========================================================================== */
 :root {
-  /* Colores — paleta industrial: acero oscuro + amarillo de seguridad.
-     Reemplaza el carbón + llama que usaba la versión restaurante
-     (Brasa Urbana); estos valores tienen que coincidir con
-     SITE_CONFIG.colors en script.js. */
-  --color-background: #15181B;   /* acero oscuro — fondo general */
-  --color-background-rgb: 21, 24, 27; /* mismo color, en "r, g, b" — se usa
+  /* Colores — paleta industrial clara: fondo acero frío, tinta azul
+     acero y amarillo de seguridad como detalle decorativo. Estos
+     valores tienen que coincidir con SITE_CONFIG.colors en script.js
+     (ahí se pisan al cargar la página para rebrandear la plantilla). */
+  --color-background: #F4F6F8;   /* acero frío — fondo general */
+  --color-background-rgb: 244, 246, 248; /* mismo color, en "r, g, b" — se usa
      dentro de rgba() para el header y el lightbox (ver más abajo). Si
      cambiás --color-background, actualizá este valor también. */
-  --color-surface:    #1E2226;   /* panel — tarjetas, footer, header */
-  --color-text:       #F1F3F4;   /* blanco frío — texto principal sobre fondo oscuro */
-  --color-text-muted: #97A1A8;   /* gris grafito — texto secundario */
-  --color-accent:     #F2A900;   /* amarillo de seguridad — acento, botones, links activos */
-  --color-accent-dark:#C98700;   /* amarillo oscuro — hover de acento */
-  --color-border:     #2A2F34;   /* línea divisoria sutil sobre el fondo oscuro */
+  --color-surface:    #FFFFFF;   /* panel — tarjetas, footer, header */
+  --color-text:       #18232F;   /* tinta azul acero — texto principal */
+  --color-text-muted: #5D6B78;   /* gris azulado — texto secundario */
+  --color-accent:     #163A5F;   /* azul acero — botones, links, etiquetas */
+  --color-accent-dark:#0F2A47;   /* azul más oscuro — hover del acento */
+  --color-highlight:  #F2B544;   /* amarillo de seguridad — SOLO detalles
+     decorativos (nunca texto: no tiene contraste suficiente sobre el
+     fondo claro) */
+  --color-border:     #DCE3EA;   /* línea divisoria sutil sobre el fondo claro */
+  --color-border-strong: #66707A; /* borde de CONTROLES (inputs, botones
+     secundarios, píldoras): necesita ≥3:1 de contraste no-texto para
+     que se vea el borde del campo (WCAG 1.4.11). Derivado de
+     --color-border + --color-text — revisá este valor si cambiás la
+     paleta. No forma parte de SITE_CONFIG.colors. */
 
   /* Marca ALMATE — fija, no depende del cliente. La firma del footer
-     ("Built with ALMATE") usa este color en TODOS los sitios que
-     construyas, para que tu estudio se vea siempre igual sin importar
-     la paleta de cada cliente.
+     ("Desarrollado por ALMATE · Soluciones digitales") usa este color
+     en TODOS los sitios que construyas, para que tu estudio se vea
+     siempre igual sin importar la paleta de cada cliente.
      ⚠️ El azul exacto no venía con código de color en el brandbook que
      me pasaste (los otros 3 colores sí tenían hex) — dejé un electric
      blue estándar como placeholder. Reemplazalo por el HEX real de tu
@@ -78,8 +87,16 @@
   box-sizing: border-box;
 }
 
+/* El atributo hidden tiene que ganarle a cualquier display de clase */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
+  /* El header es sticky: sin este offset, al navegar por anclas los
+     títulos de sección quedan debajo del header. */
+  scroll-padding-top: 5.5rem;
 }
 
 html, body {
@@ -95,6 +112,19 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* Feedback táctil discreto (Android/iOS) y selección con la paleta
+     de la marca en vez del azul del sistema. */
+  -webkit-tap-highlight-color: rgba(22, 58, 95, 0.22);
+}
+
+::selection {
+  background-color: rgba(242, 181, 68, 0.45);
+  color: var(--color-text);
+}
+
+/* Con el menú móvil abierto no debe scrollearse el fondo */
+body.menu-open {
+  overflow: hidden;
 }
 
 img {
@@ -106,6 +136,8 @@ img {
 a {
   color: inherit;
   text-decoration: none;
+  /* Evita el zoom táctil al doble-tap en enlaces y botones */
+  touch-action: manipulation;
 }
 
 ul {
@@ -120,14 +152,52 @@ button {
   background: none;
   border: none;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 /* Estado de foco visible para navegación por teclado (accesibilidad) */
 a:focus-visible,
 button:focus-visible,
-iframe:focus-visible {
+iframe:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+/* El destino del "Saltar al contenido" no es interactivo: no necesita
+   anillo de foco (ya está en la sección correcta). */
+main:focus {
+  outline: none;
+}
+
+/* Texto solo para lectores de pantalla (avisos en vivo del catálogo) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Enlace de salto: invisible hasta que recibe el foco (Tab) */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.8em 1.4em;
+  background-color: var(--color-accent);
+  color: var(--color-background);
+  font-weight: 600;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 0;
 }
 
 
@@ -158,8 +228,9 @@ p {
 
 /* Cada section-label es una etiqueta en mayúsculas, condensada y con
    tracking amplio — el mismo lenguaje visual que un cartel de galpón o
-   una etiqueta de caja de herramientas. Reemplaza el estilo itálico
-   editorial que tenía la versión restaurante (no encajaba acá). */
+   una etiqueta de caja de herramientas. La barrita amarilla de
+   adelante es el único uso del amarillo de seguridad en el texto:
+   decora sin comprometer la lectura. */
 .section-label {
   font-family: var(--font-display);
   font-style: normal;
@@ -169,6 +240,15 @@ p {
   color: var(--color-accent);
   font-size: 0.9rem;
   margin: 0 0 0.75rem;
+}
+.section-label::before {
+  content: "";
+  display: inline-block;
+  width: 1.4rem;
+  height: 2px;
+  margin-right: 0.55rem;
+  vertical-align: middle;
+  background-color: var(--color-highlight);
 }
 
 main > section {
@@ -195,7 +275,7 @@ main > section {
 }
 
 .btn--secondary {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   color: var(--color-text);
 }
 .btn--secondary:hover {
@@ -203,14 +283,17 @@ main > section {
   color: var(--color-accent);
 }
 
+/* Verde WhatsApp con contraste AA sobre fondo claro: el verde original
+   (#3DA35D) daba ~2.9:1 como texto. Este da ~4.9:1 en reposo y el
+   hover invierte con texto blanco (~5.3:1). */
 .btn--whatsapp {
   background-color: transparent;
-  border: 1px solid #3DA35D;
-  color: #3DA35D;
+  border: 1px solid #1F7A43;
+  color: #1F7A43;
 }
 .btn--whatsapp:hover {
-  background-color: #3DA35D;
-  color: var(--color-background);
+  background-color: #1F7A43;
+  color: #FFFFFF;
 }
 
 
@@ -230,7 +313,7 @@ main > section {
 /* La clase la agrega el JS de la Etapa 4 al bajar la página: un poco
    más de presencia (sombra sutil), sin cambiar el layout. */
 .site-header.is-scrolled {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .header__inner {
@@ -244,10 +327,22 @@ main > section {
 }
 
 .header__logo {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 600;
   letter-spacing: 0.01em;
+}
+/* Logo: mismo archivo en header y footer, siempre proporcional.
+   object-fit: contain evita deformar un logo cuadrado (500×500)
+   dentro de una caja distinta. */
+.header__logo img {
+  width: auto;
+  height: 2.4rem;
+  max-width: 10rem;
+  object-fit: contain;
 }
 
 /* En mobile, <nav id="header-nav"> es un panel que cuelga debajo del
@@ -263,26 +358,39 @@ main > section {
   border-bottom: 1px solid var(--color-border);
   max-height: 0;
   overflow: hidden;
+  overscroll-behavior: contain;
   transition: max-height 0.3s ease;
 }
+/* Abierto: llega hasta abajo de la pantalla (no un tope fijo de 24rem,
+   que recortaba los links con zoom de texto) y scrollea si no entra. */
 .header__nav.header__nav--open {
-  max-height: 24rem;
+  max-height: calc(100dvh - 4.75rem);
+  overflow-y: auto;
 }
 
 .header__nav-list {
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
-  padding: 1.5rem var(--container-padding) 1.75rem;
+  gap: 0.25rem;
+  padding: 1rem var(--container-padding) 1.25rem;
 }
 
+/* Bloque completo como objetivo táctil (≥44px), no solo la línea de
+   texto: en mobile el menú es la navegación principal. */
 .header__nav-list a {
+  display: block;
+  min-height: 2.75rem;
+  padding: 0.6rem 0;
   font-size: 1rem;
   color: var(--color-text-muted);
   transition: color 0.2s ease;
 }
 .header__nav-list a:hover {
   color: var(--color-text);
+}
+.header__nav-list a[aria-current] {
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
 .header__cta {
@@ -300,7 +408,7 @@ main > section {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 0.5rem;
+  padding: 0.75rem 0.6rem; /* objetivo táctil ≥44px */
 }
 .menu-toggle__bar {
   width: 22px;
@@ -441,17 +549,21 @@ main > section {
   transition: transform 0.4s ease;
 }
 
-.menu-card:hover img {
-  transform: scale(1.03);
-}
-
 .menu-card h3 {
   margin-bottom: 0.35em;
   transition: color 0.2s ease;
 }
 
-.menu-card:hover h3 {
-  color: var(--color-accent);
+/* Los hover solo donde hay puntero real: en táctil no deben dejar
+   estados "pegados" (y las tarjetas no son enlaces, así que en
+   touch no deben sugerir clic). */
+@media (hover: hover) {
+  .menu-card:hover img {
+    transform: scale(1.03);
+  }
+  .menu-card:hover h3 {
+    color: var(--color-accent);
+  }
 }
 
 .menu-card p {
@@ -500,7 +612,8 @@ main > section {
   transition: transform 0.4s ease;
 }
 
-.gallery__item:hover img {
+.gallery__item:hover img,
+.gallery__item:focus-visible img {
   transform: scale(1.04);
 }
 
@@ -554,6 +667,8 @@ main > section {
   position: absolute;
   top: 1.25rem;
   right: 1.5rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   font-size: 2rem;
   line-height: 1;
   color: var(--color-text);
@@ -578,7 +693,7 @@ main > section {
 }
 
 .testimonial-card:hover {
-  border-top-color: var(--color-accent);
+  border-top-color: var(--color-highlight);
 }
 
 .testimonial-card__rating {
@@ -628,7 +743,7 @@ main > section {
   gap: 1.1rem;
 }
 .location__details dt {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   margin-bottom: 0.15em;
 }
@@ -674,6 +789,13 @@ main > section {
   font-size: 1.3rem;
   margin: 0 0 0.3em;
 }
+.footer__logo img {
+  width: auto;
+  height: 2rem;
+  max-width: 9rem;
+  object-fit: contain;
+  vertical-align: middle;
+}
 
 .footer__brand p:last-child {
   color: var(--color-text-muted);
@@ -682,9 +804,13 @@ main > section {
 
 .footer__nav ul {
   display: grid;
-  gap: 0.6rem;
+  gap: 0.2rem;
 }
+/* Objetivo táctil completo (≥44px por link) */
 .footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   color: var(--color-text-muted);
   font-size: 0.95rem;
 }
@@ -703,6 +829,9 @@ main > section {
   margin-top: 0.5rem;
 }
 .footer__social a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   font-size: 0.9rem;
   color: var(--color-accent);
 }
@@ -720,7 +849,7 @@ main > section {
 
 .footer__bottom p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
 }
 
@@ -734,7 +863,8 @@ main > section {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
   color: var(--color-text-muted);
   transition: color 0.2s ease;
 }
@@ -763,22 +893,305 @@ main > section {
    ========================================================================== */
 .whatsapp-float {
   position: fixed;
-  bottom: 1.5rem;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); /* no tapa la
+     barra inferior de iPhone */
   right: 1.5rem;
-  background-color: #3DA35D;
-  color: var(--color-background);
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem; /* objetivo táctil ≥44px */
+  background-color: #1F7A43; /* contraste AA con el texto claro */
+  color: #FFFFFF;
   padding: 0.75em 1.25em;
   border-radius: 999px;
   font-weight: 600;
   font-size: 0.9rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   z-index: 40;
 }
 .whatsapp-float[hidden] { display: none; }
 
 
 /* ==========================================================================
-   14. ACCESIBILIDAD: MOVIMIENTO REDUCIDO
+   14. CATÁLOGO + LISTA DE CONSULTA
+   El contenido viene de SITE_CONFIG.catalog (script.js) y lo renderiza
+   catalog.js. Sin productos publicados queda un estado vacío visible:
+   nunca se muestran precios ni disponibilidad inventados.
+   ========================================================================== */
+.catalog__lead {
+  color: var(--color-text-muted);
+  max-width: 62ch;
+}
+
+.catalog__controls {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0 1.75rem;
+  padding: 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.catalog__controls[hidden] { display: none; }
+
+.catalog__search {
+  display: grid;
+  gap: 0.4rem;
+}
+.catalog__search label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.catalog__search input {
+  width: 100%;
+  min-height: 2.75rem; /* objetivo táctil ≥44px */
+  padding: 0.8em 1em;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1rem; /* 16px: evita el zoom automático de iOS al enfocar */
+}
+.catalog__search input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.85;
+}
+.catalog__search input:hover {
+  border-color: var(--color-accent);
+}
+.catalog__search input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.catalog__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.catalog__category {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem; /* objetivo táctil ≥44px */
+  padding: 0.5em 1.1em;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: none;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.catalog__category:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.catalog__category.is-active {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-background);
+}
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+.product-card__name {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.product-card__meta {
+  margin: 0;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.product-card__price {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+/* "Consultar precio": sin precio publicado no se muestra ningún número */
+.product-card__price.is-consult {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.product-card__availability,
+.product-card__description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.product-card__add {
+  margin-top: auto;
+  align-self: flex-start;
+}
+/* Confirmación breve tras agregar a la lista (ver catalog.js) */
+.product-card__add.is-added {
+  background-color: var(--color-accent-dark);
+}
+
+.catalog__empty {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+}
+.catalog__empty[hidden] { display: none; }
+
+@media (min-width: 640px) {
+  .catalog__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 980px) {
+  .catalog__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* --- Lista de consulta --- */
+.consult {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+/* Recibe el foco tras "Vaciar lista": es un destino, no un control. */
+.consult:focus {
+  outline: none;
+}
+.consult__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.consult__head h3 { margin: 0; }
+.consult__count {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.consult__list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.consult__item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.consult__item-info {
+  display: grid;
+  gap: 0.15rem;
+}
+.consult__item-name { font-weight: 600; }
+.consult__item-sku {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+.consult__item-price {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-accent);
+}
+.consult__item-price.is-consult {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.consult__item-qty {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+.consult__item-qty input {
+  width: 5rem;
+  min-height: 2.75rem; /* objetivo táctil ≥44px */
+  padding: 0.45em 0.6em;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px; /* 16px: evita el zoom automático de iOS al enfocar */
+}
+.consult__remove {
+  justify-self: start;
+  min-height: 2.75rem; /* objetivo táctil ≥44px */
+  padding: 0.45em 1em;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.consult__remove:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.consult__empty {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+.consult__empty[hidden] { display: none; }
+.consult__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.consult__actions [hidden] { display: none; }
+
+@media (min-width: 700px) {
+  .consult__item {
+    grid-template-columns: 2fr auto auto auto;
+    align-items: center;
+    gap: 1rem;
+  }
+  .consult__remove { justify-self: end; }
+}
+
+
+/* ==========================================================================
+   15. ACCESIBILIDAD: MOVIMIENTO REDUCIDO
    Si la persona configuró su sistema para minimizar animaciones,
    respetamos esa preferencia en todo el sitio.
    ========================================================================== */
@@ -793,7 +1206,7 @@ main > section {
 
 
 /* ==========================================================================
-   15. APARICIÓN DE ELEMENTOS AL HACER SCROLL
+   16. APARICIÓN DE ELEMENTOS AL HACER SCROLL
    El JS le agrega `.reveal` a los bloques que queremos que "entren" y
    los observa con IntersectionObserver. Acá solo definimos los dos
    estados (antes / después) — un único movimiento, discreto y

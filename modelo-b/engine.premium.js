@@ -128,6 +128,24 @@
     },
   };
 
+  /* 3. MARCA / LOGO ---------------------------------------------------------
+     Si brand.logo apunta a un archivo válido se muestra la imagen en header y
+     footer. Si no hay logo, o si la imagen no carga, se muestra el nombre
+     comercial en texto: nunca queda un hueco con una imagen rota. */
+  function applyBrand() {
+    const useLogo = !!C.brand.logo;
+    const alt = C.brand.logoAlt || brandName;
+    $$(".js-brand").forEach((el) => {
+      if (!useLogo) { el.textContent = brandName; return; }
+      el.innerHTML = `<img class="brand__logo" src="${esc(img(C.brand.logo))}" alt="${esc(alt)}" width="64" height="64" decoding="async">`;
+      const image = el.querySelector("img");
+      if (!image) { el.textContent = brandName; return; }
+      const fallback = () => { el.textContent = brandName; };
+      image.addEventListener("error", fallback);
+      if (image.complete && image.naturalWidth === 0) fallback();
+    });
+  }
+
   function renderPage() {
     const main = $("#main");
     main.innerHTML = "";
@@ -141,7 +159,7 @@
     }
     const links = SECTIONS.filter((k) => k !== "hero").map((k) => `<li><a href="#${ID[k]}">${esc(C[k].navLabel)}</a></li>`).join("");
     $("#nav-list").innerHTML = links;
-    $$(".js-brand").forEach((el) => (el.textContent = brandName));
+    applyBrand();
     const desc = $("#footer-desc"); desc.textContent = C.brand.description; desc.hidden = !C.brand.description;
     $("#footer-nav").innerHTML = (SECTIONS.indexOf("hero") !== -1 ? '<li><a href="#inicio">Inicio</a></li>' : "") + links;
     $("#footer-contact").innerHTML =
@@ -183,7 +201,7 @@
     try { if (!ld || JSON.stringify(JSON.parse(ld.textContent)) !== JSON.stringify(seo.jsonld)) bad.push("datos estructurados"); } catch (e) { bad.push("datos estructurados (JSON inválido)"); }
     const pre = $('link[rel="preload"][as="image"]');
     if ((pre ? pre.getAttribute("href") : "") !== (seo.heroPreload || "")) bad.push("preload del hero");
-    if (bad.length) console.warn(`${LOG} El <head> estático de index.html no coincide con config.premium.js (${bad.join(", ")}). Los buscadores y redes sociales leen el HTML estático: ejecutá "node premium/tools/sync-seo.js" o actualizalo a mano (ver README).`);
+    if (bad.length) console.warn(`${LOG} El <head> estático de index.html no coincide con config.premium.js (${bad.join(", ")}). Los buscadores y redes sociales leen el HTML estático: ejecutá "node modelo-b/tools/sync-seo.js" o actualizalo a mano (ver README).`);
     window.__PREMIUM_SEO_STALE__ = bad;
   }
 
@@ -197,17 +215,66 @@
 
   /* 7. MENÚ + HEADER ------------------------------------------------------- */
   const visible = (el) => !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+
+  /* Bloqueo de scroll del fondo: en iOS Safari "overflow:hidden" en <body>
+     no alcanza, así que además fijamos el body en la posición actual y lo
+     devolvemos al cerrar (patrón estándar de modales). */
+  let scrollLocks = 0, scrollLockY = 0;
+  function lockScroll() {
+    if (scrollLocks === 0) {
+      scrollLockY = window.scrollY;
+      document.body.classList.add("no-scroll");
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollLockY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+    }
+    scrollLocks += 1;
+  }
+  function unlockScroll() {
+    scrollLocks = Math.max(0, scrollLocks - 1);
+    if (scrollLocks === 0) {
+      document.body.classList.remove("no-scroll");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollLockY); // restaura la posición previa
+    }
+  }
+
   function initHeader() {
     const header = $("#site-header"), toggle = $("#menu-toggle"), nav = $("#site-nav");
+    const main = $("#main"), footer = $(".site-footer");
     const isOpen = () => header.classList.contains("is-menu-open");
     const set = (open) => {
+      if (open === isOpen()) return;
       header.classList.toggle("is-menu-open", open);
-      document.body.classList.toggle("no-scroll", open);
+      open ? lockScroll() : unlockScroll();
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      // Con el panel a pantalla completa, el resto de la página no debe
+      // ser navegable ni cliqueable (y el scroll del panel es interno).
+      [main, footer].forEach((el) => { if (el) el.toggleAttribute("inert", open); });
+      if (open) nav.scrollTop = 0;
     };
     toggle.addEventListener("click", () => set(!isOpen()));
-    nav.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
+    nav.addEventListener("click", (e) => {
+      const a = e.target.closest("a");
+      if (!a) return;
+      set(false);
+      // Tras cerrar, el foco pasa a la sección de destino (si no, cae al
+      // body y el usuario de teclado pierde el lugar).
+      const href = a.getAttribute("href") || "";
+      const target = href.length > 1 ? document.getElementById(href.slice(1)) : null;
+      if (target) {
+        target.setAttribute("tabindex", "-1");
+        target.addEventListener("blur", () => target.removeAttribute("tabindex"), { once: true });
+        target.focus({ preventScroll: true });
+      }
+    });
     header.addEventListener("keydown", (e) => {
       if (!isOpen()) return;
       if (e.key === "Escape") { set(false); toggle.focus(); return; }
@@ -223,8 +290,23 @@
       if (mq.addEventListener) mq.addEventListener("change", h); else if (mq.addListener) mq.addListener(h);
     }
     const onScroll = () => {
+      if (scrollLocks > 0) return; // con el fondo congelado no cambia nada
       header.classList.toggle("is-scrolled", window.scrollY > 40);
-      document.body.classList.toggle("past-hero", window.scrollY > window.innerHeight * 0.7);
+      // El flotante aparece pasado el hero (medido sobre #inicio, no con
+      // window.innerHeight: en mobile esa unidad es engañosa) y también
+      // cerca del final de la página, para no perder el contacto.
+      const hero = document.getElementById("inicio");
+      const heroEnd = hero ? hero.offsetTop + hero.offsetHeight : window.innerHeight;
+      const nearEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 480;
+      document.body.classList.toggle("past-hero", window.scrollY > heroEnd - 120 || nearEnd);
+      // Scrollspy: marca la sección visible en la navegación.
+      const y = window.scrollY + header.offsetHeight + window.innerHeight * 0.35;
+      let current = "";
+      $$("main section[id]").forEach((s) => { if (s.offsetTop <= y) current = s.id; });
+      $$("#nav-list a").forEach((a) => {
+        if (a.getAttribute("href") === `#${current}`) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      });
     };
     onScroll(); window.addEventListener("scroll", onScroll, { passive: true });
   }
@@ -244,11 +326,11 @@
       prev.hidden = next.hidden = count.hidden = list.length < 2;
       show(list.indexOf(btn));
       box.classList.add("is-open"); box.setAttribute("aria-hidden", "false");
-      document.body.classList.add("no-scroll"); $("#lb-close").focus();
+      lockScroll(); $("#lb-close").focus();
     };
     const close = () => {
       box.classList.remove("is-open"); box.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("no-scroll");
+      unlockScroll();
       if (opener && document.body.contains(opener)) opener.focus();
     };
     $$(".mosaic__item").forEach((b) => b.addEventListener("click", () => open(b)));
@@ -288,7 +370,15 @@
     $("#main").addEventListener("error", onImgError, true); // los "error" de <img> no burbujean: se captura
     renderPage();
     checkStaticSeo();
-    initWhatsappFloat(); initHeader(); initLightbox(); initReveal();
+    // initReveal primero: si algo de los inits siguientes falla, el
+    // contenido ya quedó visible (nunca se queda oculto a pantalla).
+    // Cada init se protege aparte para que un fallo aislado no deje el
+    // resto de la página sin funcionar.
+    const steps = [initReveal, initWhatsappFloat, initHeader, initLightbox];
+    steps.forEach((fn) => {
+      try { fn(); }
+      catch (e) { console.error(`${LOG} Error al iniciar "${fn.name}":`, e); }
+    });
     document.documentElement.setAttribute("data-premium", "ready");
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();

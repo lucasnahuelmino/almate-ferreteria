@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /* ALMATE · Modelo Premium · sync-seo.js
-   Sincroniza el <head> ESTÁTICO de premium/index.html con premium/config.premium.js.
+   Sincroniza el <head> ESTÁTICO de modelo-b/index.html con modelo-b/config.premium.js.
    Por qué: buscadores y redes sociales leen el HTML estático (no ejecutan config.premium.js).
    Sin dependencias: solo Node.js (>= 14). No toca nada fuera del bloque marcado.
 
    Uso (desde la raíz del repo):
-     node premium/tools/sync-seo.js           reescribe el bloque SEO de premium/index.html
-     node premium/tools/sync-seo.js --check   no escribe; sale con código 1 si está desactualizado
+     node modelo-b/tools/sync-seo.js           reescribe el bloque SEO de modelo-b/index.html
+     node modelo-b/tools/sync-seo.js --check   no escribe; sale con código 1 si está desactualizado
 */
 "use strict";
 const fs = require("fs"), path = require("path"), vm = require("vm");
@@ -34,7 +34,7 @@ const block = headLine + "\n" + core.renderSeoBlock(seo) + "\n  " + END;
 const out = html.slice(0, a) + block + html.slice(b + END.length);
 
 if (out === html) { console.log("OK · el <head> estático ya coincide con config.premium.js."); process.exit(0); }
-if (check) { console.error("DESACTUALIZADO · el <head> de index.html no coincide con config.premium.js. Ejecutá: node premium/tools/sync-seo.js"); process.exit(1); }
+if (check) { console.error("DESACTUALIZADO · el <head> de index.html no coincide con config.premium.js. Ejecutá: node modelo-b/tools/sync-seo.js"); process.exit(1); }
 fs.writeFileSync(htmlPath, out);
-console.log("Actualizado · premium/index.html (title, description, canonical, Open Graph, Twitter, JSON-LD, preload del hero).");
+console.log("Actualizado · modelo-b/index.html (title, description, canonical, Open Graph, Twitter, JSON-LD, preload del hero).");
 if (!cfg.seo.url) console.log("Nota: seo.url está vacío → no se emiten canonical, og:url ni og:image/twitter:image (requieren URL absoluta).");

@@ -205,8 +205,13 @@
     });
     const brandLink = $("#brand-link");
     brandLink.setAttribute("aria-label", `${C.brand.name}, inicio`);
+    const footerBrand = $(".footer__brand");
     if (C.brand.logo) {
-      brandLink.innerHTML = `<img src="${esc(Core.assetUrl(C, C.brand.logo))}" alt="${esc(C.brand.logoAlt || C.brand.name)}" width="160" height="48">`;
+      const logoSrc = Core.assetUrl(C, C.brand.logo);
+      const logoAlt = C.brand.logoAlt || C.brand.name;
+      const logoMarkup = `<img src="${esc(logoSrc)}" alt="${esc(logoAlt)}" decoding="async">`;
+      brandLink.innerHTML = logoMarkup;
+      if (footerBrand) footerBrand.innerHTML = logoMarkup;
     }
     const description = $("#footer-description");
     description.textContent = C.brand.description;
@@ -277,9 +282,12 @@
     if (serviceImage) { serviceImage.remove(); return; }
     const heroImage = image.closest(".hero__image");
     if (heroImage) { heroImage.remove(); $(".hero").classList.add("hero--no-image"); return; }
-    const logo = image.closest(".brand-link");
+    const logo = image.closest(".brand-link, .footer__brand");
     if (logo) logo.textContent = C.brand.name;
-    else image.remove();
+    // La imagen del lightbox no se elimina del DOM: si falla, el diálogo
+    // sigue en pie (con el aviso en el pie de foto) y se puede reintentar
+    // al abrir otra miniatura.
+    else if (image.id !== "lightbox-image") image.remove();
   }
   function removeSection(id) {
     const section = document.getElementById(id);
@@ -288,16 +296,53 @@
     $$(`li:empty`).forEach((item) => item.remove());
   }
 
+  /* Bloqueo de scroll del fondo (menú y lightbox). En iOS "overflow:hidden"
+     en <body> no alcanza: además fijamos el body y devolvemos la posición
+     al cerrar. Contador compartido por si se superponen. */
+  let scrollLocks = 0, scrollLockY = 0;
+  function lockScroll() {
+    if (scrollLocks === 0) {
+      scrollLockY = window.scrollY;
+      document.body.classList.add("no-scroll");
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollLockY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+    }
+    scrollLocks += 1;
+  }
+  function unlockScroll() {
+    scrollLocks = Math.max(0, scrollLocks - 1);
+    if (scrollLocks === 0) {
+      document.body.classList.remove("no-scroll");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollLockY);
+    }
+  }
+
   function initHeader() {
     const header = $("#site-header");
     const toggle = $("#menu-toggle");
     const nav = $("#site-nav");
+    const main = $("main");
+    const footer = $("footer");
     const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
     const visible = (element) => !!(element.offsetWidth || element.offsetHeight || element.getClientRects().length);
     const setOpen = (open) => {
+      if (open === isOpen()) return;
       header.classList.toggle("is-menu-open", open);
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      open ? lockScroll() : unlockScroll();
+      // El panel queda sobre la página: el resto no debe ser navegable
+      // ni cliqueable mientras está abierto.
+      [main, footer].forEach((el) => { if (el) el.toggleAttribute("inert", open); });
+      if (open) nav.scrollTop = 0;
     };
     const close = (returnFocus) => {
       setOpen(false);
@@ -312,7 +357,18 @@
       }
     });
     nav.addEventListener("click", (event) => {
-      if (event.target.closest("a")) close(false);
+      const link = event.target.closest("a");
+      if (!link) return;
+      setOpen(false);
+      // El foco pasa a la sección de destino: si no, cae al body y el
+      // usuario de teclado pierde el lugar tras navegar.
+      const href = link.getAttribute("href") || "";
+      const target = href.length > 1 ? document.getElementById(href.slice(1)) : null;
+      if (target) {
+        target.setAttribute("tabindex", "-1");
+        target.addEventListener("blur", () => target.removeAttribute("tabindex"), { once: true });
+        target.focus({ preventScroll: true });
+      }
     });
     header.addEventListener("keydown", (event) => {
       if (!isOpen()) return;
@@ -323,6 +379,16 @@
       const first = focusables[0], last = focusables[focusables.length - 1];
       if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
       else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+    // Escape también funciona si el foco se fue del header (el listener
+    // de arriba solo cubre keydown dentro de él).
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) close(true);
+    });
+    // Clic fuera del header: cierra el panel (si el clic es dentro, lo
+    // manejan los handlers de toggle/nav).
+    document.addEventListener("click", (event) => {
+      if (isOpen() && !header.contains(event.target)) close(false);
     });
     const breakpoint = window.matchMedia("(min-width: 1200px)");
     const onBreakpoint = (event) => { if (event.matches) close(false); };
@@ -356,7 +422,7 @@
     const close = () => {
       dialog.hidden = true;
       dialog.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("no-scroll");
+      unlockScroll();
       image.removeAttribute("src");
       if (opener && document.body.contains(opener)) opener.focus();
     };
@@ -366,7 +432,7 @@
       show(activeItems.indexOf(item));
       dialog.hidden = false;
       dialog.setAttribute("aria-hidden", "false");
-      document.body.classList.add("no-scroll");
+      lockScroll();
       closeButton.focus();
     }));
     closeButton.addEventListener("click", close);

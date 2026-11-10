@@ -5,7 +5,7 @@
    Los valores faltantes o inválidos NO rompen el sitio: config-core.js los
    reemplaza por valores seguros y avisa en la consola del navegador
    ("[ALMATE Premium] …"). Revisá la consola (F12) después de editar.
-   Después de cambiar nombre, SEO, hero o dominio: node premium/tools/sync-seo.js
+   Después de cambiar nombre, SEO, hero o dominio: node modelo-b/tools/sync-seo.js
 
    Bloques: sections · brand · seo · contact · colors · fonts · hero ·
    about · services · gallery · testimonials · location · footer.
@@ -20,22 +20,27 @@ const PREMIUM_CONFIG = {
      testimonials, location. */
   sections: ["hero", "about", "services", "gallery", "testimonials", "location"],
 
-  /* Carpeta base de las imágenes (relativa a /premium/). */
+  /* Carpeta base de las imágenes (relativa a /modelo-b/). */
   assetBase: "../img/",
 
   brand: {
     name: "FREN Ferreterías",
     description: "Ferretería de barrio en Quilmes.",
+    // Logo (opcional). Copiar el archivo a img/ y escribir aquí el nombre de
+    // archivo (relativo a assetBase) + el texto alternativo. Sin logo, o si la
+    // imagen no carga, se muestra el nombre comercial en texto.
+    logo: "logo_local.png",
+    logoAlt: "Logo de FREN Ferreterías",
   },
 
   /* SEO. Los buscadores y las redes leen el <head> ESTÁTICO de index.html
-     (no ejecutan este archivo). Se sincroniza con: node premium/tools/sync-seo.js
+     (no ejecutan este archivo). Se sincroniza con: node modelo-b/tools/sync-seo.js
      (o a mano, ver README). El motor solo AVISA en consola si no coinciden. */
   seo: {
     title: "FREN Ferreterías | Quilmes",
     description:
       "FREN Ferreterías. Herramientas, materiales, bulonería, electricidad, plomería y más en Quilmes.",
-    url: "",            // URL pública de ESTA página, terminada en "/", ej. "https://www.minegocio.com.ar/premium/"
+    url: "",            // URL pública de ESTA página, terminada en "/", ej. "https://www.minegocio.com.ar/modelo-b/"
                         // (vacío = no se emiten canonical, og:url ni imagen social)
     image: "hero-ferreteria.jpg",
     locale: "es_AR",
@@ -75,7 +80,7 @@ const PREMIUM_CONFIG = {
     muted: "#6b665c",       // texto secundario
   },
 
-  /* Tipografías. Las actuales están AUTOALOJADAS en premium/fonts/ (licencia SIL OFL).
+  /* Tipografías. Las actuales están AUTOALOJADAS en modelo-b/fonts/ (licencia SIL OFL).
      Si cambiás de familia, agregá sus @font-face en fonts/fonts.css (ver README). */
   fonts: {
     display: '"Cormorant Garamond", "Iowan Old Style", Georgia, serif',

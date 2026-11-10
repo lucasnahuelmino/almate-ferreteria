@@ -48,10 +48,17 @@ body {
   font-size: 16px;
   line-height: 1.55;
   overflow-x: clip;
+  -webkit-tap-highlight-color: rgba(23, 105, 255, 0.18); /* feedback táctil discreto */
+}
+
+::selection {
+  background: rgba(23, 105, 255, 0.25);
+  color: var(--ink);
 }
 
 body.no-scroll {
   overflow: hidden;
+  overscroll-behavior: contain;
 }
 
 img,
@@ -65,10 +72,12 @@ img {
 
 a {
   color: inherit;
+  touch-action: manipulation; /* sin zoom táctil al doble-tap */
 }
 
 button {
   font: inherit;
+  touch-action: manipulation;
 }
 
 h1,
@@ -267,6 +276,14 @@ ol {
   gap: 0.65rem;
   min-width: 0;
   text-decoration: none;
+}
+
+.brand img {
+  align-self: center;
+  width: auto;
+  height: 2.4rem;
+  max-width: 11rem;
+  object-fit: contain;
 }
 
 .brand__mark {
@@ -1406,6 +1423,14 @@ ol {
   white-space: nowrap;
 }
 
+.footer__brand img {
+  display: block;
+  width: auto;
+  height: 3rem;
+  max-width: min(100%, 14rem);
+  object-fit: contain;
+}
+
 .footer__identity p {
   max-width: 38ch;
   margin-top: 1.2rem;
@@ -1978,6 +2003,7 @@ ol {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
@@ -1995,7 +2021,7 @@ ol {
 
 .consultation-shortcut {
   display: inline-flex;
-  min-height: 42px;
+  min-height: 44px;
   align-items: center;
   gap: 0.45rem;
   padding: 0.55rem 0.75rem;
@@ -2003,7 +2029,7 @@ ol {
   color: var(--paper);
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -2016,6 +2042,7 @@ ol {
   border-radius: 50%;
   background: var(--accent);
   color: var(--accent-ink);
+  font-size: 0.75rem; /* sin esto el contador hereda font-size:0 del botón en móvil */
   font-weight: 700;
 }
 
@@ -2092,10 +2119,16 @@ ol {
   margin-top: 0.3rem;
   color: var(--accent);
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+/* Rubro filtrado activo (aria-pressed se sincroniza en engine.modelo-d.js) */
+.category-card[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
 }
 
 .featured-section {
@@ -2165,6 +2198,7 @@ ol {
   font-family: var(--display);
   font-size: 1.2rem;
   line-height: 1.2;
+  overflow-wrap: anywhere; /* nombres larguísimos no desbordan la tarjeta */
 }
 
 .product-card__brand,
@@ -2242,6 +2276,25 @@ ol {
   border-color: var(--accent);
 }
 
+/* Estado deshabilitado visible (p. ej. "Vaciar lista" sin artículos) */
+.button:disabled,
+.button[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.button:disabled:hover {
+  filter: none;
+}
+
+/* Confirmación breve tras agregar a la consulta (ver flashAdded) */
+.button.is-added {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
 .catalog-controls {
   display: grid;
   grid-template-columns: minmax(14rem, 2fr) repeat(3, minmax(10rem, 1fr));
@@ -2310,6 +2363,19 @@ ol {
   background: #fff;
 }
 
+/* Acciones del estado vacío y del campo de búsqueda */
+.catalog-empty .button,
+.catalog-search__clear {
+  display: flex;
+  width: fit-content;
+  margin-top: 0.75rem;
+  font-size: 0.78rem;
+}
+
+.catalog-search__clear {
+  margin-top: 0;
+}
+
 .consultation-panel {
   padding: clamp(1rem, 3vw, 2rem);
   border: 1px solid var(--line);
@@ -2345,18 +2411,18 @@ ol {
 
 .consultation-item__details span {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.85rem;
 }
 
 .consultation-item__quantity {
   display: grid;
   gap: 0.3rem;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
 }
 
 .consultation-item input {
-  min-height: 40px;
+  min-height: 44px;
 }
 
 .consultation-item .button--secondary,
@@ -2544,7 +2610,7 @@ ol {
 
   .consultation-shortcut::before {
     content: "Consulta";
-    font-size: 0.61rem;
+    font-size: 0.75rem;
   }
 
   .category-grid,

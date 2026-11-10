@@ -1,6 +1,6 @@
-# Modelo D · Catálogo comercial
+# Catálogo de productos — Modelos D y A
 
-Guía de datos, búsqueda y consulta de productos de [Modelo D](../modelo-d/README.md). La plantilla es una vidriera estática: no vende en línea, no cobra, no reserva y no confirma pedidos.
+Guía de datos, búsqueda y consulta de productos. [Modelo D](../modelo-d/README.md) es la referencia completa (fichas, subcategorías, orden y límites); [Modelo A](../modelo-a/README.md) incorpora una versión liviana para su sección de consulta. Ambos son vidrieras estáticas: no venden en línea, no cobran, no reservan y no confirman pedidos.
 
 ## Categorías
 
@@ -67,3 +67,25 @@ El botón aparece solo con una lista no vacía y un número válido. El mensaje 
 ## Volumen y límites
 
 El motor admite hasta 200 categorías y 1000 productos por página, sin paginación. La configuración, el catálogo y las rutas son estáticos; cambios de contenido requieren volver a publicar los archivos. `localStorage` depende del navegador y puede borrarse. Para inventarios mayores, actualizaciones frecuentes, stock en tiempo real o transacciones, se requiere una solución con backend y diseño específico; eso queda fuera de esta plantilla.
+
+## Catálogo del Modelo A (versión liviana)
+
+En `modelo-a/script.js`, `SITE_CONFIG.catalog.items` es una lista de artículos. No hay categorías declaradas aparte: los rubros del filtro se derivan de los `category` de los artículos.
+
+| Campo | Requerido | Uso |
+|---|---:|---|
+| `name` | Sí | Nombre visible y buscable. Sin nombre, el artículo se descarta con aviso. |
+| `category` | No | Rubro del filtro; se usa también en el mensaje de consulta. |
+| `sku` | No | Código visible y buscable (`Cód. …`). |
+| `brand` | No | Marca visible y buscable. |
+| `description` | No | Resumen en la tarjeta. |
+| `image` | No | Ruta relativa a `modelo-a/` o URL http(s); las rutas inseguras se omiten. |
+| `imageAlt` | Recomendado si hay imagen | Texto alternativo; si se omite, se usa el nombre del artículo. |
+| `price` | No | Número no negativo en pesos; si se omite o es inválido, se muestra **"Consultar precio"**. |
+| `availability` | No | Texto de disponibilidad, solo si el comercio lo confirma. Nunca se genera stock por defecto. |
+
+- **Vacío por defecto:** la plantilla no inventa productos ni precios; con la lista vacía se muestra un estado visible que invita a consultar.
+- **Búsqueda y rubros:** la búsqueda es sobre nombre, marca, código y descripción; el filtro por rubro y la búsqueda se combinan.
+- **Lista de consulta:** agregar, cantidades de 1 a 999, quitar y vaciar. Se guarda en `localStorage` bajo la clave `alma-consulta-a-v1` (solo se restauran artículos que sigan en el catálogo).
+- **WhatsApp:** el botón aparece solo con la lista no vacía y un número válido en `SITE_CONFIG.whatsapp`. El mensaje incluye el comercio, cada artículo con su cantidad, código si existe y precio **solo cuando está informado**; no confirma ninguna compra.
+- **Límites:** no impone topes de catálogo; está pensado para vidrieras chicas publicadas como archivos estáticos. Para inventarios grandes o en movimiento, ver el límite y la arquitectura de D más arriba.

@@ -5,30 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
 
-  <!-- ⚠️ SITE_CONFIG (Etapa 8): cuando esta plantilla se convierta en la
-       web de un cliente real, estos valores (title, description, OG,
-       canonical, JSON-LD) son EXACTAMENTE los mismos datos que van a
-       vivir en SITE_CONFIG. Por ahora están escritos a mano acá. -->
+  <!-- ⚠️ SEO estático: estos valores (title, description, OG, JSON-LD)
+       coinciden con SITE_CONFIG en script.js. Cuando se publique el
+       sitio, completar la URL canónica con el dominio real — mientras
+       no lo tenga, no se declara canonical. -->
 
   <title>FREN Ferreterías | Quilmes</title>
   <meta name="description" content="FREN Ferreterías. Herramientas, materiales, bulonería, electricidad, plomería y más en Quilmes.">
 
-  <!-- Reemplazar por el dominio real una vez que el sitio esté publicado -->
-  <link rel="canonical" href="https://www.ferreteriaelyunque.com.ar/">
-
-  <!-- Open Graph: cómo se ve el sitio cuando lo comparten en redes -->
+  <!-- Open Graph: cómo se ve el sitio cuando lo comparten en redes.
+       Sin og:url/og:image hasta que el sitio tenga dominio propio. -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FREN Ferreterías">
   <meta property="og:title" content="FREN Ferreterías | Quilmes">
-  <meta property="og:image" content="https://www.ferreteriaelyunque.com.ar/img/hero-ferreteria.jpg">
-  <meta property="og:url" content="https://www.ferreteriaelyunque.com.ar/">
+  <meta property="og:description" content="FREN Ferreterías. Herramientas, materiales, bulonería, electricidad, plomería y más en Quilmes.">
   <meta property="og:locale" content="es_AR">
 
   <!-- Twitter/X usa estas si no encuentra las de Open Graph -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ferreterías FREN | Herramientas y materiales en Buenos Aires">
-  <meta name="twitter:description" content="Herramientas, materiales y asesoramiento técnico real.">
-  <meta name="twitter:image" content="https://www.ferreteriaelyunque.com.ar/img/hero-ferreteria.jpg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FREN Ferreterías | Quilmes">
+  <meta name="twitter:description" content="FREN Ferreterías. Herramientas, materiales, bulonería, electricidad, plomería y más en Quilmes.">
 
   <!-- Tipografías: Oswald (títulos, condensada/técnica) + Manrope (cuerpo). Se cargan solo los pesos que usamos. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,24 +41,24 @@
        también acá. -->
   <link rel="preload" as="image" href="img/hero-ferreteria.jpg" fetchpriority="high">
 
-  <!-- Datos estructurados (JSON-LD): así Google entiende que esto es un
-       restaurante real, con dirección, teléfono y horarios — es lo que
-       habilita que aparezca con estrellas, mapa y horario en los
-       resultados de búsqueda ("SEO local"). Los valores de acá deben
-       coincidir con los de la sección de Ubicación más abajo. -->
+  <!-- Datos estructurados (JSON-LD): así Google entiende que esto es una
+       ferretería real, con dirección, teléfono y horarios — es lo que
+       habilita que aparezca con mapa y horario en los resultados de
+       búsqueda ("SEO local"). Los valores coinciden con SITE_CONFIG en
+       script.js y con la sección de Ubicación más abajo. Sin url,
+       image ni priceRange: no hay dominio ni precios confirmados que
+       declarar. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "HardwareStore",
-    "name": "Ferretería El Yunque",
-    "image": "https://www.ferreteriaelyunque.com.ar/img/hero-ferreteria.jpg",
-    "url": "https://www.ferreteriaelyunque.com.ar/",
-    "telephone": "+54-11-0000-0000",
-    "priceRange": "$$",
+    "name": "FREN Ferreterías",
+    "description": "Ferretería de barrio en Quilmes.",
+    "telephone": "+541142502865",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Av. Rivadavia 5678",
-      "addressLocality": "Buenos Aires",
+      "streetAddress": "Andrés Baranda 1309",
+      "addressLocality": "Quilmes",
       "addressCountry": "AR"
     },
     "openingHoursSpecification": [
@@ -70,7 +66,7 @@
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
         "opens": "08:00",
-        "closes": "19:00"
+        "closes": "18:00"
       },
       {
         "@type": "OpeningHoursSpecification",
@@ -78,23 +74,23 @@
         "opens": "08:00",
         "closes": "13:00"
       }
-    ],
-    "sameAs": [
-      "https://www.instagram.com/ferreteriaelyunque",
-      "https://www.facebook.com/ferreteriaelyunque"
     ]
   }
   </script>
 </head>
 <body>
 
+  <!-- Primer enlace del tabulador: permite saltar el header y la
+       navegación directo al contenido principal con teclado. -->
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
   <!-- ======================================
        HEADER
        ====================================== -->
   <header class="site-header" id="site-header">
     <div class="header__inner">
-      <a href="#inicio" class="header__logo" aria-label="Ferretería El Yunque - Inicio" data-config-text="businessName" data-config-aria-template="{name} - Inicio">
-        Ferretería El Yunque
+      <a href="#inicio" class="header__logo" aria-label="FREN Ferreterías - Inicio" data-config-text="businessName" data-config-aria-template="{name} - Inicio">
+        FREN Ferreterías
       </a>
 
       <nav class="header__nav" id="header-nav" aria-label="Navegación principal">
@@ -102,6 +98,7 @@
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#menu">Productos</a></li>
+          <li><a href="#catalogo">Catálogo</a></li>
           <li><a href="#galeria">Galería</a></li>
           <li><a href="#ubicacion">Ubicación</a></li>
         </ul>
@@ -123,7 +120,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main" tabindex="-1">
 
     <!-- ======================================
          HERO
@@ -131,11 +128,9 @@
     <section class="hero" id="inicio">
       <div class="hero__content">
         <p class="hero__eyebrow">Ferretería técnica</p>
-        <h1 class="hero__title" data-config-text="mainTexts.heroTitle">Todo lo que tu obra necesita, en un solo lugar.</h1>
+        <h1 class="hero__title" data-config-text="mainTexts.heroTitle">Todo para tu hogar y tu proyecto.</h1>
         <p class="hero__subtitle" data-config-text="mainTexts.heroSubtitle">
-          Herramientas, materiales y asesoramiento técnico real. Para el
-          profesional que no tiene tiempo que perder y para el que arregla
-          en casa por primera vez.
+          Herramientas, materiales y atención personalizada en el corazón de Quilmes.
         </p>
         <div class="hero__actions">
           <a href="#" class="btn btn--primary" id="whatsapp-cta-hero">Consultar por WhatsApp</a>
@@ -146,7 +141,7 @@
       <div class="hero__media">
         <img
           src="img/hero-ferreteria.jpg"
-          alt="Estantería de herramientas y materiales en Ferretería El Yunque"
+          alt="Estantería de herramientas y materiales en FREN Ferreterías"
           loading="eager"
           fetchpriority="high"
           width="880"
@@ -162,7 +157,7 @@
       <div class="about__media reveal">
         <img
           src="img/about-local.jpg"
-          alt="Empleado de Ferretería El Yunque ordenando estanterías de herramientas"
+          alt="Empleado de FREN Ferreterías ordenando estanterías de herramientas"
           loading="lazy"
           decoding="async"
           width="700"
@@ -174,7 +169,7 @@
         <p class="section-label">Quiénes somos</p>
         <h2>Del mostrador a la obra.</h2>
         <p>
-          Ferretería El Yunque abrió para que encontrar lo que necesitás no sea
+          FREN Ferreterías abrió para que encontrar lo que necesitás no sea
           una odisea: stock real, precios claros y alguien detrás del mostrador
           que sabe de qué está hablando.
         </p>
@@ -197,44 +192,84 @@
           <img src="img/categoria-herramientas-manuales.jpg" alt="Estantería de herramientas manuales" loading="lazy" decoding="async" width="500" height="375">
           <h3>Herramientas manuales</h3>
           <p>Martillos, destornilladores, llaves y todo lo que no falla nunca.</p>
-          <span class="menu-card__price">Desde $4.500</span>
         </article>
 
         <article class="menu-card reveal">
           <img src="img/categoria-herramientas-electricas.jpg" alt="Taladro y amoladora eléctrica en exhibición" loading="lazy" decoding="async" width="500" height="375">
           <h3>Herramientas eléctricas</h3>
           <p>Taladros, amoladoras y equipos de las mejores marcas, con service propio.</p>
-          <span class="menu-card__price">Desde $22.000</span>
         </article>
 
         <article class="menu-card reveal">
           <img src="img/categoria-construccion.jpg" alt="Bolsas de cemento y materiales de construcción" loading="lazy" decoding="async" width="500" height="375">
           <h3>Materiales de construcción</h3>
           <p>Cemento, arena, ladrillos y todo lo necesario para la obra gruesa.</p>
-          <span class="menu-card__price">Desde $3.000</span>
         </article>
 
         <article class="menu-card reveal">
           <img src="img/categoria-plomeria.jpg" alt="Caños y conexiones de plomería" loading="lazy" decoding="async" width="500" height="375">
           <h3>Plomería y sanitarios</h3>
           <p>Caños, conexiones, grifería y repuestos para no quedarte con la canilla abierta.</p>
-          <span class="menu-card__price">Desde $2.200</span>
         </article>
 
         <article class="menu-card reveal">
           <img src="img/categoria-electricidad.jpg" alt="Cables y llaves térmicas para instalaciones eléctricas" loading="lazy" decoding="async" width="500" height="375">
           <h3>Electricidad</h3>
           <p>Cables, llaves térmicas, tomas y todo para instalaciones seguras.</p>
-          <span class="menu-card__price">Desde $1.800</span>
         </article>
 
         <article class="menu-card reveal">
           <img src="img/categoria-pinturas.jpg" alt="Latas de pintura látex y esmalte sintético" loading="lazy" decoding="async" width="500" height="375">
           <h3>Pinturas y accesorios</h3>
           <p>Látex, esmaltes, pinceles y rodillos para terminar como corresponde.</p>
-          <span class="menu-card__price">Desde $6.500</span>
         </article>
 
+      </div>
+    </section>
+
+    <!-- ======================================
+         CATÁLOGO + LISTA DE CONSULTA
+         El contenido real de los productos vive en SITE_CONFIG.catalog
+         (script.js). Por defecto está vacío: no se inventan productos,
+         precios ni disponibilidad.
+         ====================================== -->
+    <section class="catalog" id="catalogo">
+      <p class="section-label">Catálogo</p>
+      <h2 class="catalog__title">Sumá lo que necesitás y consultá</h2>
+      <p class="catalog__lead">
+        Buscá entre los productos publicados, agregalos a tu lista y
+        envialos por WhatsApp en un solo mensaje. Los precios se muestran
+        solo cuando están publicados; si no, se consulta directamente.
+      </p>
+
+      <div class="catalog__controls" id="catalog-controls" hidden>
+        <div class="catalog__search">
+          <label for="catalog-search">Buscar producto</label>
+          <input type="search" id="catalog-search" placeholder="Nombre, marca o código…" autocomplete="off">
+        </div>
+        <div class="catalog__categories" id="catalog-categories" role="group" aria-label="Filtrar por rubro"></div>
+      </div>
+
+      <div class="catalog__grid" id="catalog-grid"></div>
+      <!-- Anuncio de resultados para lectores de pantalla (vacío = 0
+           resultados, que ya lo anuncia #catalog-empty). -->
+      <p class="sr-only" id="catalog-status" role="status"></p>
+      <p class="catalog__empty" id="catalog-empty" role="status"></p>
+
+      <div class="consult" id="consulta" tabindex="-1">
+        <div class="consult__head">
+          <h3>Mi lista de consulta</h3>
+          <p class="consult__count" id="consult-count" aria-live="polite">0 artículos</p>
+        </div>
+        <!-- Anuncia altas, bajas y cambios de cantidad (el contador de
+             arriba no cambia al repetir un artículo ya agregado). -->
+        <p class="sr-only" id="consult-status" role="status"></p>
+        <ul class="consult__list" id="consult-list"></ul>
+        <p class="consult__empty" id="consult-empty">Todavía no agregaste artículos a la lista.</p>
+        <div class="consult__actions">
+          <a class="btn btn--primary" id="consult-whatsapp" href="#" target="_blank" rel="noopener noreferrer" hidden>Enviar lista por WhatsApp</a>
+          <button type="button" class="btn btn--secondary" id="consult-clear" hidden>Vaciar lista</button>
+        </div>
       </div>
     </section>
 
@@ -246,30 +281,32 @@
       <h2>Un vistazo al lugar</h2>
 
       <div class="gallery__grid" id="gallery-grid">
-        <button class="gallery__item reveal" data-full="img/galeria-01.jpg">
-          <img src="img/galeria-01.jpg" alt="Estantería completa de herramientas manuales en Ferretería El Yunque" loading="lazy" decoding="async" width="600" height="600">
+        <button class="gallery__item reveal" data-full="img/galeria-01.jpg" aria-label="Ampliar: Estantería completa de herramientas manuales en FREN Ferreterías">
+          <img src="img/galeria-01.jpg" alt="Estantería completa de herramientas manuales en FREN Ferreterías" loading="lazy" decoding="async" width="600" height="600">
         </button>
-        <button class="gallery__item reveal" data-full="img/galeria-02.jpg">
+        <button class="gallery__item reveal" data-full="img/galeria-02.jpg" aria-label="Ampliar: Mostrador de atención al cliente">
           <img src="img/galeria-02.jpg" alt="Mostrador de atención al cliente" loading="lazy" decoding="async" width="600" height="600">
         </button>
-        <button class="gallery__item reveal" data-full="img/galeria-03.jpg">
+        <button class="gallery__item reveal" data-full="img/galeria-03.jpg" aria-label="Ampliar: Sector de pinturas y esmaltes">
           <img src="img/galeria-03.jpg" alt="Sector de pinturas y esmaltes" loading="lazy" decoding="async" width="600" height="600">
         </button>
-        <button class="gallery__item reveal" data-full="img/galeria-04.jpg">
+        <button class="gallery__item reveal" data-full="img/galeria-04.jpg" aria-label="Ampliar: Depósito de materiales de construcción">
           <img src="img/galeria-04.jpg" alt="Depósito de materiales de construcción" loading="lazy" decoding="async" width="600" height="600">
         </button>
-        <button class="gallery__item reveal" data-full="img/galeria-05.jpg">
-          <img src="img/galeria-05.jpg" alt="Vidriera exterior de Ferretería El Yunque" loading="lazy" decoding="async" width="600" height="600">
+        <button class="gallery__item reveal" data-full="img/galeria-05.jpg" aria-label="Ampliar: Vidriera exterior de FREN Ferreterías">
+          <img src="img/galeria-05.jpg" alt="Vidriera exterior de FREN Ferreterías" loading="lazy" decoding="async" width="600" height="600">
         </button>
-        <button class="gallery__item reveal" data-full="img/galeria-06.jpg">
+        <button class="gallery__item reveal" data-full="img/galeria-06.jpg" aria-label="Ampliar: Empleado asesorando a un cliente sobre herramientas eléctricas">
           <img src="img/galeria-06.jpg" alt="Empleado asesorando a un cliente sobre herramientas eléctricas" loading="lazy" decoding="async" width="600" height="600">
         </button>
       </div>
 
-      <!-- Lightbox: se conecta con JavaScript en Etapa 4 -->
-      <div class="lightbox" id="lightbox" aria-hidden="true">
+      <!-- Lightbox: diálogo modal (role/aria-modal) para que los lectores
+           de pantalla sepan que el resto de la página queda detrás.
+           La imagen no tiene src hasta que se abre (evita pedidos rotos). -->
+      <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada" aria-hidden="true">
         <button class="lightbox__close" id="lightbox-close" aria-label="Cerrar imagen ampliada">&times;</button>
-        <img src="" alt="" id="lightbox-image">
+        <img alt="" id="lightbox-image">
       </div>
     </section>
 
@@ -302,19 +339,19 @@
         <dl class="location__details">
           <div>
             <dt>Dirección</dt>
-            <dd data-config-text="address">Av. Rivadavia 5678, Buenos Aires</dd>
+            <dd data-config-text="address">Andrés Baranda 1309, Quilmes</dd>
           </div>
           <div>
             <dt>Horarios</dt>
-            <dd data-config-text="hours">Lun. a Vie. de 8:00 a 19:00 hs · Sáb. de 8:00 a 13:00 hs</dd>
+            <dd data-config-text="hours">Lun. a Vie. 8:00 a 18:00 hs · Sáb. 8:00 a 13:00 hs</dd>
           </div>
           <div>
             <dt>Teléfono</dt>
-            <dd><a href="tel:+541100000000" data-config-href="phoneHref" data-config-text="phone">+54 11 0000-0000</a></dd>
+            <dd><a href="tel:+541142502865" data-config-href="phoneHref" data-config-text="phone">(011) 4250-2865</a></dd>
           </div>
           <div>
             <dt>Email</dt>
-            <dd><a href="mailto:hola@ferreteriaelyunque.com.ar" data-config-href="emailHref" data-config-text="email">hola@ferreteriaelyunque.com.ar</a></dd>
+            <dd><a href="mailto:info@frenferreterias.com.ar" data-config-href="emailHref" data-config-text="email">info@frenferreterias.com.ar</a></dd>
           </div>
         </dl>
 
@@ -326,8 +363,8 @@
       <div class="location__map reveal">
         <!-- El mapa se reemplaza fácilmente cambiando el src del iframe -->
         <iframe
-          title="Mapa de ubicación de Ferretería El Yunque"
-          src="https://www.google.com/maps?q=Buenos+Aires&output=embed"
+          title="Mapa de ubicación de FREN Ferreterías"
+          src="https://www.google.com/maps?q=Andr%C3%A9s+Baranda+1309,+Quilmes&output=embed"
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
         ></iframe>
@@ -342,8 +379,8 @@
   <footer class="site-footer">
     <div class="footer__top">
       <div class="footer__brand">
-        <p class="footer__logo" data-config-text="businessName">Ferretería El Yunque</p>
-        <p data-config-text="description">Todo lo que tu obra necesita.</p>
+        <p class="footer__logo" data-config-text="businessName">FREN Ferreterías</p>
+        <p data-config-text="description">Ferretería de barrio en Quilmes.</p>
       </div>
 
       <nav class="footer__nav" aria-label="Navegación del pie de página">
@@ -351,27 +388,28 @@
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#menu">Productos</a></li>
+          <li><a href="#catalogo">Catálogo</a></li>
           <li><a href="#galeria">Galería</a></li>
           <li><a href="#ubicacion">Ubicación</a></li>
         </ul>
       </nav>
 
       <div class="footer__contact">
-        <p data-config-text="address">Av. Rivadavia 5678, Buenos Aires</p>
-        <p><a href="tel:+541100000000" data-config-href="phoneHref" data-config-text="phone">+54 11 0000-0000</a></p>
-        <p><a href="mailto:hola@ferreteriaelyunque.com.ar" data-config-href="emailHref" data-config-text="email">hola@ferreteriaelyunque.com.ar</a></p>
+        <p data-config-text="address">Andrés Baranda 1309, Quilmes</p>
+        <p><a href="tel:+541142502865" data-config-href="phoneHref" data-config-text="phone">(011) 4250-2865</a></p>
+        <p><a href="mailto:info@frenferreterias.com.ar" data-config-href="emailHref" data-config-text="email">info@frenferreterias.com.ar</a></p>
         <div class="footer__social">
-          <a href="#" aria-label="Instagram de Ferretería El Yunque" data-config-href="instagram" data-config-aria-template="Instagram de {name}">Instagram</a>
-          <a href="#" aria-label="Facebook de Ferretería El Yunque" data-config-href="facebook" data-config-aria-template="Facebook de {name}">Facebook</a>
+          <a href="#" aria-label="Instagram de FREN Ferreterías" data-config-href="instagram" data-config-aria-template="Instagram de {name}">Instagram</a>
+          <a href="#" aria-label="Facebook de FREN Ferreterías" data-config-href="facebook" data-config-aria-template="Facebook de {name}">Facebook</a>
         </div>
       </div>
     </div>
 
     <div class="footer__bottom">
-      <p id="footer-copyright">&copy; 2026 Ferretería El Yunque. Todos los derechos reservados.</p>
-      <a href="#" class="almate-signature" aria-label="Sitio construido con el sistema ALMATE">
+      <p id="footer-copyright">&copy; 2026 FREN Ferreterías. Todos los derechos reservados.</p>
+      <a href="#" class="almate-signature" aria-label="Desarrollado por ALMATE · Soluciones digitales">
         <span class="almate-signature__mark" aria-hidden="true"></span>
-        Built with ALMATE
+        Desarrollado por ALMATE · Soluciones digitales
       </a>
     </div>
   </footer>
@@ -388,5 +426,14 @@
   </a>
 
   <script src="script.js"></script>
+  <script src="catalog.js"></script>
+
+  <!-- Sin JavaScript los bloques con animación de aparición (.reveal)
+       quedarían invisibles: acá se muestran igual. -->
+  <noscript>
+    <style>
+      .reveal { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
 </body>
 </html>

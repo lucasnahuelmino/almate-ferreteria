@@ -1,5 +1,5 @@
 /* ==========================================================================
-   FERRETERÍA EL YUNQUE — script.js
+   FREN FERRETERÍAS · MODELO A — script.js
    ETAPA 8: Sistema de configuración
 
    Qué hace este archivo (7 bloques, cada uno independiente):
@@ -19,9 +19,9 @@
    ✅ ESTE ES EL ÚNICO LUGAR QUE HAY QUE TOCAR PARA CONVERTIR ESTA
    PLANTILLA EN LA WEB DE OTRO CLIENTE.
 
-   No hace falta buscar "Ferretería El Yunque" ni el teléfono en ningún
+   No hace falta buscar "FREN Ferreterías" ni el teléfono en ningún
    otro archivo: cambiá los valores de acá abajo y el sitio entero
-   (textos, links de contacto, redes, colores) se actualiza solo.
+   (textos, links de contacto, redes, colores, logo) se actualiza solo.
 
    IMPORTANTE: los metadatos para buscadores y redes sociales (el
    <title>, la meta description, las etiquetas Open Graph y el JSON-LD
@@ -35,6 +35,12 @@ const SITE_CONFIG = {
 
   businessName: "FREN Ferreterías",
 description: "Ferretería de barrio en Quilmes.",
+
+// Logo opcional: ruta relativa a la carpeta modelo-a/ (o URL http(s)).
+// Si la imagen falta o no carga, se muestra el nombre del negocio en
+// texto — el header y el footer nunca quedan vacíos.
+logo: "img/logo_local.png",
+logoAlt: "Logo de FREN Ferreterías",
 
 phone: "(011) 4250-2865",
 phoneHref: "tel:+541142502865",
@@ -54,6 +60,18 @@ whatsappMessage:
 instagram: "#",
 facebook: "#",
 
+// --- Catálogo (opcional) ---
+// Vacío por defecto: esta plantilla NO inventa productos, precios ni
+// disponibilidad. Cada artículo acepta:
+//   name        (obligatorio),
+//   category, sku, brand, description, image, imageAlt  (opcionales),
+//   price       (número en pesos, o null → se muestra "Consultar precio"),
+//   availability (solo si el comercio la informa; si no, no se muestra).
+// Ejemplo: { name: "Martillo de uña", category: "Herramientas", price: null }
+catalog: {
+  items: [],
+},
+
 mainTexts: {
   heroTitle: "Todo para tu hogar y tu proyecto.",
   heroSubtitle:
@@ -63,17 +81,18 @@ mainTexts: {
   // --- Colores ---
   // Las mismas variables que existen en :root de style.css. Cambiarlas
   // acá pisa el valor del CSS al cargar la página, así que rebrandear
-  // el sitio para otro cliente es tocar estos 7 valores y nada más.
-  // Paleta industrial: acero oscuro + amarillo de seguridad (en vez
-  // del carbón + llama que usaba Brasa Urbana).
+  // el sitio para otro cliente es tocar estos 8 valores y nada más.
+  // Paleta industrial clara: fondo acero frío, tinta azul acero y
+  // amarillo de seguridad solo como detalle decorativo.
   colors: {
-    background: "#f6f7f9",
+    background: "#F4F6F8",
     surface: "#ffffff",
-    text: "#1d1d1d",
-    textMuted: "#5d6470",
-    accent: "#008FD5",
-    accentDark: "#006CB3",
-    border: "#d9dee5",
+    text: "#18232F",
+    textMuted: "#5D6B78",
+    accent: "#163A5F",
+    accentDark: "#0F2A47",
+    highlight: "#F2B544",
+    border: "#DCE3EA",
   },
 };
 
@@ -113,7 +132,7 @@ function applyConfigHref() {
 // El "{name}" del template se reemplaza por SITE_CONFIG.businessName.
 // Es el mismo mecanismo que data-config-text / data-config-href, pero
 // para aria-label — así funciona igual sin importar el nombre del
-// negocio (antes buscaba el texto literal "Brasa Urbana", que se
+// negocio (antes el nombre estaba escrito a mano en el HTML y se
 // rompía apenas cambiabas de cliente).
 function applyConfigAriaLabels() {
   document.querySelectorAll("[data-config-aria-template]").forEach((el) => {
@@ -152,6 +171,7 @@ function applyBrandColors() {
     textMuted: "--color-text-muted",
     accent: "--color-accent",
     accentDark: "--color-accent-dark",
+    highlight: "--color-highlight",
     border: "--color-border",
   };
 
@@ -171,12 +191,45 @@ function applyBrandColors() {
   }
 }
 
+// Valida la ruta del logo antes de usarla: solo rutas relativas sin
+// ".." ni barra invertida, o URLs http(s). Cualquier otra cosa se
+// ignora y el nombre queda en texto.
+function isValidLogoPath(value) {
+  if (typeof value !== "string") return false;
+  const path = value.trim();
+  if (!path || path.includes("\\") || path.split("/").indexOf("..") !== -1) return false;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(path)) return /^https?:/i.test(path);
+  return true;
+}
+
+// Logo en el header y en el footer: misma imagen, mismo alt. Si falla
+// la carga, cada uno vuelve a mostrar el nombre del negocio.
+function applyLogo() {
+  if (!isValidLogoPath(SITE_CONFIG.logo)) return;
+  const alt = SITE_CONFIG.logoAlt || SITE_CONFIG.businessName;
+  [".header__logo", ".footer__logo"].forEach((selector) => {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    const fallbackText = el.textContent.trim() || SITE_CONFIG.businessName;
+    const img = document.createElement("img");
+    img.src = SITE_CONFIG.logo.trim();
+    img.alt = alt;
+    img.decoding = "async";
+    img.addEventListener("error", () => {
+      el.textContent = fallbackText;
+    }, { once: true });
+    el.textContent = "";
+    el.appendChild(img);
+  });
+}
+
 function applySiteConfig() {
   applyBrandColors();
   applyConfigText();
   applyConfigHref();
   applyConfigAriaLabels();
   applyCopyright();
+  applyLogo();
 }
 
 
@@ -204,6 +257,9 @@ function initWhatsappLinks() {
     el.setAttribute("href", link);
     el.setAttribute("target", "_blank");
     el.setAttribute("rel", "noopener noreferrer");
+    // El flotante viene oculto en el HTML: solo se muestra si el
+    // número de WhatsApp es válido (si no, no hay a dónde llevar).
+    if (el.id === "whatsapp-float") el.hidden = false;
   });
 }
 
@@ -219,39 +275,73 @@ function initMobileMenu() {
   const nav = document.getElementById("header-nav");
   if (!toggle || !nav) return;
 
-  function closeMenu() {
+  function isOpen() {
+    return nav.classList.contains("header__nav--open");
+  }
+
+  function closeMenu(restoreFocus) {
+    if (!isOpen()) return;
     nav.classList.remove("header__nav--open");
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Abrir menú de navegación");
+    document.body.classList.remove("menu-open"); // vuelve a scrollear
+    if (restoreFocus) toggle.focus();
   }
 
   function openMenu() {
     nav.classList.add("header__nav--open");
     toggle.setAttribute("aria-expanded", "true");
     toggle.setAttribute("aria-label", "Cerrar menú de navegación");
+    document.body.classList.add("menu-open"); // el fondo no scrollea
   }
 
   toggle.addEventListener("click", () => {
-    const isOpen = nav.classList.contains("header__nav--open");
-    isOpen ? closeMenu() : openMenu();
+    isOpen() ? closeMenu(false) : openMenu();
   });
 
-  // Al tocar un link del menú, cerrarlo (si no, tapa el contenido al navegar)
+  // Al tocar un link del menú, cerrarlo y dejar el foco en la sección
+  // de destino (si no, el foco queda en un link ya colapsado).
   nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
+    link.addEventListener("click", () => {
+      closeMenu(false);
+      const href = link.getAttribute("href") || "";
+      const target = href.length > 1 ? document.getElementById(href.slice(1)) : null;
+      if (target) {
+        target.setAttribute("tabindex", "-1");
+        target.addEventListener(
+          "blur",
+          () => target.removeAttribute("tabindex"),
+          { once: true }
+        );
+        target.focus({ preventScroll: true });
+      }
+    });
   });
 
-  // Cerrar con la tecla Escape
+  // Cerrar con la tecla Escape (y devolver el foco al botón) solo
+  // cuando el menú está abierto.
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
+    if (event.key === "Escape" && isOpen()) closeMenu(true);
   });
 
   // Cerrar si el usuario toca fuera del menú
   document.addEventListener("click", (event) => {
     const clickedInsideNav = nav.contains(event.target);
     const clickedToggle = toggle.contains(event.target);
-    if (!clickedInsideNav && !clickedToggle) closeMenu();
+    if (!clickedInsideNav && !clickedToggle) closeMenu(false);
   });
+
+  // Si la pantalla crece hasta el breakpoint de desktop, el panel deja
+  // de existir: hay que cerrarlo para no dejar aria-expanded pegado.
+  const desktopQuery = window.matchMedia("(min-width: 860px)");
+  const onBreakpoint = (event) => {
+    if (event.matches) closeMenu(false);
+  };
+  if (typeof desktopQuery.addEventListener === "function") {
+    desktopQuery.addEventListener("change", onBreakpoint);
+  } else if (typeof desktopQuery.addListener === "function") {
+    desktopQuery.addListener(onBreakpoint); // Safari antiguo
+  }
 }
 
 
@@ -326,6 +416,15 @@ function initGalleryLightbox() {
       closeLightbox();
     }
   });
+
+  // El diálogo tiene un solo elemento enfocable (Cerrar): Tab siempre
+  // vuelve ahí en vez de escaparse hacia la página de atrás.
+  lightbox.addEventListener("keydown", (event) => {
+    if (event.key === "Tab" && lightbox.classList.contains("lightbox--open")) {
+      event.preventDefault();
+      closeButton.focus();
+    }
+  });
 }
 
 
@@ -368,6 +467,47 @@ function initScrollReveal() {
 
 
 /* ==========================================================================
+   8. NAVEGACIÓN ACTIVA (scrollspy)
+   Marca con aria-current la sección que se está viendo, así el menú
+   indica "dónde estoy" (en mobile es la única referencia).
+   ========================================================================== */
+function initNavHighlight() {
+  const links = Array.from(
+    document.querySelectorAll('.header__nav-list a[href^="#"]')
+  );
+  if (!links.length || !("IntersectionObserver" in window)) return;
+
+  const sections = links
+    .map((link) => document.getElementById((link.getAttribute("href") || "").slice(1)))
+    .filter(Boolean);
+  if (!sections.length) return;
+
+  function setActive(id) {
+    links.forEach((link) => {
+      const active = link.getAttribute("href") === `#${id}`;
+      if (active) {
+        link.setAttribute("aria-current", "true");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  }
+
+  // Se considera "visible" la sección que ocupa la franja central de
+  // la pantalla (el header cubre la parte superior).
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) setActive(entry.target.id);
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+  sections.forEach((section) => observer.observe(section));
+}
+
+
+/* ==========================================================================
    INICIALIZACIÓN
    applySiteConfig() va primero: así el resto del sitio (WhatsApp
    incluido) ya encuentra los datos actualizados cuando arranca.
@@ -379,4 +519,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeaderScroll();
   initGalleryLightbox();
   initScrollReveal();
+  initNavHighlight();
 });

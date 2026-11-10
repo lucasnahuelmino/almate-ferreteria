@@ -26,7 +26,7 @@
   const DEFAULTS = {
     sections: SECTION_KEYS.slice(),
     assetBase: "../img/",
-    brand: { name: "", description: "" },
+    brand: { name: "", description: "", logo: "", logoAlt: "" },
     seo: { title: "", description: "", url: "", image: "", locale: "es_AR", schemaType: "LocalBusiness" },
     contact: {
       phone: "", phoneHref: "", email: "", address: "", locality: "", hours: "", hoursSpec: [],
@@ -147,6 +147,9 @@
     const brand = sectionObj("brand");
     cfg.brand.name = str("brand.name", brand.name, "");
     cfg.brand.description = str("brand.description", brand.description, "");
+    cfg.brand.logo = pathOk("brand.logo", brand.logo);
+    cfg.brand.logoAlt = str("brand.logoAlt", brand.logoAlt, "");
+    if (cfg.brand.logo && !cfg.brand.logoAlt) add("warn", "brand.logoAlt", "Falta el texto alternativo del logo; se usa brand.name como respaldo.");
     if (!cfg.brand.name) add("error", "brand.name", "Falta el nombre comercial (brand.name). Es obligatorio.");
 
     const seo = sectionObj("seo");
@@ -157,7 +160,7 @@
     if (seo.url !== undefined && seo.url !== "") {
       const u = webUrl(seo.url);
       if (u && /^https?:\/\/[^/]+\/.*\/$|^https?:\/\/[^/]+\/$/.test(u)) cfg.seo.url = u;
-      else add("warn", "seo.url", 'Debe ser una URL http(s) completa terminada en "/" (ej. https://cliente.com/premium/). Se omiten canonical, og:url y og:image.');
+      else add("warn", "seo.url", 'Debe ser una URL http(s) completa terminada en "/" (ej. https://cliente.com/modelo-b/). Se omiten canonical, og:url y og:image.');
     }
     cfg.seo.image = pathOk("seo.image", seo.image);
     if (!cfg.seo.title) cfg.seo.title = cfg.brand.name;

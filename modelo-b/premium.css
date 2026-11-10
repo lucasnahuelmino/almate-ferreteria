@@ -23,19 +23,23 @@
 
 /* 2. BASE */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(4.5rem + env(safe-area-inset-top, 0px)); -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--paper); color: var(--ink);
   font: 400 1rem/1.7 var(--font-body); -webkit-font-smoothing: antialiased;
   overflow-wrap: anywhere; /* palabras o emails larguísimos no generan scroll horizontal */
+  -webkit-tap-highlight-color: rgba(28, 27, 25, .18); /* feedback táctil discreto */
 }
+::selection { background: rgba(216, 196, 160, .55); color: var(--ink); }
 body.no-scroll { overflow: hidden; }
 img { display: block; max-width: 100%; height: auto; }
-a { color: inherit; text-decoration: none; }
+a { color: inherit; text-decoration: none; touch-action: manipulation; }
 ul, ol { list-style: none; margin: 0; padding: 0; }
 h1, h2, h3, p, dl, dd, figure, blockquote { margin: 0; }
-button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; touch-action: manipulation; }
 :focus-visible { outline: 2px solid var(--bronze-text); outline-offset: 3px; }
+/* Destino del skip link: es una sección, no un control (sin anillo). */
+main:focus, main:focus-visible { outline: none; }
 .hero :focus-visible, .gallery :focus-visible, .site-footer :focus-visible, .lightbox :focus-visible,
 .site-header:not(.is-scrolled) :focus-visible, .site-header.is-menu-open :focus-visible, .wa-float:focus-visible { outline-color: var(--champagne); }
 [hidden] { display: none !important; }
@@ -80,19 +84,32 @@ section { padding: var(--sec) var(--pad); }
   padding: 0 var(--gutter); height: 4.5rem;
   display: flex; align-items: center; justify-content: space-between; gap: 2rem;
 }
-.brand { font-size: 1.5rem; line-height: 1; position: relative; z-index: 2; }
+.brand { font-size: 1.5rem; line-height: 1; position: relative; z-index: 2; display: inline-flex; align-items: center; min-height: 2.75rem; }
+
+/* Logo configurable (brand.logo). object-fit: contain para no deformarlo y
+   medidas acotadas para que un logo grande no rompa el header. */
+.brand img,
+.footer__brand img {
+  display: block;
+  width: auto;
+  object-fit: contain;
+  max-width: min(50vw, 12rem);
+}
+.brand img { height: clamp(1.9rem, 3.4vw, 2.5rem); }
+.footer__brand img { height: clamp(2.25rem, 5vw, 3.25rem); }
 .site-header.is-scrolled:not(.is-menu-open) {
   background: rgba(250, 247, 242, .94); color: var(--ink); border-color: rgba(28, 27, 25, .1);
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
 }
 .site-nav a {
-  position: relative; font-size: .75rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+  position: relative; font-size: .8rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+  display: inline-flex; align-items: center; min-height: 2.75rem; /* objetivo táctil ≥44px */
 }
 .site-nav a::after {
   content: ""; position: absolute; left: 0; right: 100%; bottom: -.4rem; height: 1px;
   background: currentColor; transition: right .35s var(--ease);
 }
-.site-nav a:hover::after { right: 0; }
+.site-nav a:hover::after, .site-nav a:focus-visible::after { right: 0; }
 
 .menu-toggle { width: 2.75rem; height: 2.75rem; position: relative; z-index: 2; }
 .menu-toggle span {
@@ -107,13 +124,19 @@ section { padding: var(--sec) var(--pad); }
 @media (max-width: 899px) {
   .site-nav {
     position: fixed; inset: 0; background: var(--ink); color: var(--paper);
-    display: flex; align-items: center; padding: 6rem var(--pad) 3rem;
+    display: flex; align-items: center; padding: 6rem var(--pad) calc(3rem + env(safe-area-inset-bottom, 0px));
     opacity: 0; visibility: hidden; transition: opacity .4s var(--ease), visibility .4s;
+    /* En landscape (o con zoom de texto) los links no entran: el panel
+       debe scrollear en vez de dejarlos inalcanzables. */
+    overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
   }
   .is-menu-open .site-nav { opacity: 1; visibility: visible; }
   .is-menu-open { color: var(--paper); }
-  .site-nav ul { display: grid; gap: 1.25rem; }
-  .site-nav a { font: 500 clamp(2rem, 9vw, 3rem)/1.1 var(--font-display); letter-spacing: -.01em; text-transform: none; }
+  .site-nav ul { display: grid; gap: .75rem; }
+  .site-nav a {
+    font: 500 clamp(2rem, 9vw, 3rem)/1.1 var(--font-display); letter-spacing: -.01em; text-transform: none;
+    display: inline-flex; align-items: center; min-height: 2.75rem; /* objetivo táctil */
+  }
   .site-nav a::after { display: none; }
 }
 @media (min-width: 900px) {
@@ -204,6 +227,13 @@ section { padding: var(--sec) var(--pad); }
 .mosaic__item { position: relative; overflow: hidden; background: var(--graphite); }
 .mosaic__item:first-child { grid-column: span 2; grid-row: span 2; }
 .mosaic__item img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease), filter .5s; filter: saturate(.85); }
+/* "+" siempre visible (no solo en hover): en táctil no hay hover y así
+   se ve de entrada que la imagen se puede ampliar. */
+.mosaic__item::after {
+  content: "+"; position: absolute; right: .55rem; bottom: .35rem; z-index: 1;
+  font: 400 1.6rem/1 var(--font-display); color: var(--paper);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, .65); opacity: .95; pointer-events: none;
+}
 .mosaic__item:hover img { transform: scale(1.045); filter: none; }
 @media (min-width: 760px) {
   .mosaic { grid-template-columns: repeat(12, 1fr); grid-auto-rows: clamp(150px, 16vw, 230px); gap: .9rem; }
@@ -217,7 +247,7 @@ section { padding: var(--sec) var(--pad); }
 .quotes { max-width: var(--max); margin: 0 auto; display: grid; gap: 3rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
 .quote { padding-top: 1.75rem; border-top: 1px solid var(--bronze); }
 .quote p { font-size: clamp(1.4rem, 2.4vw, 1.85rem); line-height: 1.35; font-style: italic; }
-.quote footer { margin-top: 1.5rem; font-size: .72rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--bronze-text); }
+.quote footer { margin-top: 1.5rem; font-size: .8rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--bronze-text); }
 .quote footer span { display: block; margin-top: .25rem; font-weight: 400; color: var(--muted); letter-spacing: .08em; }
 
 /* 10. CONTACTO */
@@ -225,7 +255,7 @@ section { padding: var(--sec) var(--pad); }
 .contact__info { max-width: 36rem; }
 .contact dl { margin: 2rem 0 2.5rem; border-top: 1px solid rgba(28, 27, 25, .18); }
 .contact dl > div { display: grid; grid-template-columns: 6.5rem 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(28, 27, 25, .18); }
-.contact dt { font-size: .7rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--bronze-text); padding-top: .25rem; }
+.contact dt { font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--bronze-text); padding-top: .25rem; }
 .contact dd a { border-bottom: 1px solid rgba(28, 27, 25, .3); transition: border-color .3s; word-break: break-word; }
 .contact dd a:hover { border-color: var(--bronze); }
 .contact__social { display: flex; gap: 1.25rem; }
@@ -242,12 +272,15 @@ section { padding: var(--sec) var(--pad); }
 .footer__top { display: grid; gap: 2.5rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(216, 196, 160, .25); }
 .footer__brand { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1; }
 .footer__desc { margin-top: .75rem; color: rgba(250, 247, 242, .65); max-width: 22rem; }
-.site-footer ul { display: grid; gap: .6rem; }
-.site-footer a { transition: color .3s; }
+.site-footer ul { display: grid; gap: .2rem; }
+/* Objetivo táctil completo por link (≥44px) */
+.site-footer a { transition: color .3s; display: inline-flex; align-items: center; min-height: 2.75rem; }
 .site-footer a:hover { color: var(--champagne); }
 .footer__contact { display: grid; gap: .4rem; color: rgba(250, 247, 242, .8); font-size: .95rem; word-break: break-word; }
-.footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem 2rem; padding-top: 1.75rem; font-size: .8rem; color: rgba(250, 247, 242, .55); }
+.footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem 2rem; padding-top: 1.75rem; font-size: .875rem; color: rgba(250, 247, 242, .55); }
 .footer__credit a { color: var(--champagne); letter-spacing: .04em; }
+/* Sin creditUrl el crédito queda como texto plano (no es un enlace). */
+.footer__credit a:not([href]) { color: inherit; letter-spacing: normal; }
 @media (min-width: 900px) { .footer__top { grid-template-columns: 1.4fr 1fr 1.2fr; align-items: start; } }
 
 /* 12. LIGHTBOX */
@@ -259,7 +292,7 @@ section { padding: var(--sec) var(--pad); }
 .lightbox.is-open { opacity: 1; visibility: visible; transition: opacity .3s var(--ease), visibility 0s; } /* visible al instante: permite enfocar el botón al abrir */
 .lightbox figure { grid-column: 2; display: grid; justify-items: center; gap: .9rem; min-width: 0; }
 .lightbox img { max-height: 76vh; max-width: 100%; width: auto; object-fit: contain; }
-.lightbox figcaption { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; font-size: .8rem; color: rgba(250, 247, 242, .7); text-align: center; }
+.lightbox figcaption { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; font-size: .875rem; color: rgba(250, 247, 242, .7); text-align: center; }
 .lb-btn { color: var(--paper); font-size: 2.6rem; line-height: 1; width: 3rem; height: 3rem; display: grid; place-items: center; transition: color .3s; }
 .lb-btn:hover { color: var(--champagne); }
 .lb-close { position: absolute; top: calc(.5rem + env(safe-area-inset-top, 0px)); right: .75rem; }
@@ -288,7 +321,11 @@ section { padding: var(--sec) var(--pad); }
 .config-error { padding: 9rem var(--pad) 5rem; max-width: 40rem; margin: 0 auto; }
 .config-error .label { margin-bottom: .75rem; }
 .contact__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 2rem; }
-.link-line { font-size: .75rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; border-bottom: 1px solid var(--bronze); padding-bottom: .2rem; color: var(--bronze-text); transition: color .3s; }
+.link-line {
+  display: inline-flex; align-items: center; min-height: 2.75rem; /* objetivo táctil */
+  font-size: .8rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  border-bottom: 1px solid var(--bronze); padding-bottom: .2rem; color: var(--bronze-text); transition: color .3s;
+}
 .link-line:hover { color: var(--ink); }
 .svc--noimg { grid-template-columns: 2.25rem minmax(0, 1fr); }
 .contact--nomap .contact__info { max-width: 40rem; }
@@ -303,6 +340,6 @@ section { padding: var(--sec) var(--pad); }
 @media (max-width: 380px) { .btn { padding-inline: 1.25rem; letter-spacing: .12em; } .contact dl > div { grid-template-columns: 1fr; gap: .15rem; } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; transition-delay: 0s !important; }
   .reveal { opacity: 1; transform: none; }
 }

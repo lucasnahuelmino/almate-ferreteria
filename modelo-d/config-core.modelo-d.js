@@ -60,7 +60,7 @@
   const DEFAULTS = {
     sections: SECTION_KEYS.slice(),
     assetBase: "../img/",
-    brand: { name: "", short: "", tagline: "", description: "" },
+    brand: { name: "", short: "", tagline: "", description: "", logo: "", logoAlt: "" },
     theme: Object.assign({}, DEFAULT_THEME),
     fonts: { display: '"Inter", "Segoe UI", sans-serif', body: '"Manrope", "Segoe UI", sans-serif' },
     seo: { title: "", description: "", url: "", image: "", imageAlt: "", locale: "es_AR", schemaType: "LocalBusiness" },
@@ -241,7 +241,7 @@
     /* Marca */
     const brandUser = asObject("brand", user.brand);
     Object.keys(brandUser).forEach((key) => {
-      if (!["name", "short", "tagline", "description"].includes(key)) add("warn", `brand.${key}`, "Clave desconocida (se ignora).");
+      if (!["name", "short", "tagline", "description", "logo", "logoAlt"].includes(key)) add("warn", `brand.${key}`, "Clave desconocida (se ignora).");
     });
     cfg.brand.name = readString("brand.name", brandUser.name, "");
     if (!cfg.brand.name) {
@@ -251,6 +251,12 @@
     cfg.brand.short = readString("brand.short", brandUser.short, cfg.brand.name);
     cfg.brand.tagline = readString("brand.tagline", brandUser.tagline, "");
     cfg.brand.description = readString("brand.description", brandUser.description, "");
+    cfg.brand.logo = readImage("brand.logo", brandUser.logo);
+    cfg.brand.logoAlt = readString("brand.logoAlt", brandUser.logoAlt, "");
+    if (cfg.brand.logo && !cfg.brand.logoAlt) {
+      add("warn", "brand.logoAlt", "El logo necesita un texto alternativo; se usa el nombre del negocio.");
+      cfg.brand.logoAlt = cfg.brand.name;
+    }
 
     const currencyUser = asObject("currency", user.currency);
     const currencyLocale = readString("currency.locale", currencyUser.locale, "es-AR");

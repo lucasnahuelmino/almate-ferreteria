@@ -86,6 +86,7 @@
     const name = cfg.brand.name;
     const short = cfg.brand.short || name;
     const brand = $("#brand-link");
+    const footerBrand = $("#footer-brand");
     if (brand) {
       brand.setAttribute("aria-label", name + ", inicio");
       const mark = $("#brand-short");
@@ -93,8 +94,21 @@
       if (mark) mark.textContent = short;
       if (text) text.textContent = name;
     }
-    const footerBrand = $("#footer-brand");
     if (footerBrand) footerBrand.textContent = short;
+    if (cfg.brand.logo) {
+      const src = asset(cfg.brand.logo);
+      const alt = cfg.brand.logoAlt || name;
+      const markup = `<img src="${esc(src)}" alt="${esc(alt)}" decoding="async">`;
+      const render = (element, restore) => {
+        if (!element) return;
+        element.innerHTML = markup;
+        const img = element.querySelector("img");
+        if (img) img.addEventListener("error", restore, { once: true });
+      };
+      const headerMarkup = brand ? brand.innerHTML : "";
+      render(brand, () => { if (brand) brand.innerHTML = headerMarkup; });
+      render(footerBrand, () => { if (footerBrand) footerBrand.textContent = short; });
+    }
     const footerDescription = $("#footer-description");
     if (footerDescription) {
       footerDescription.textContent = cfg.brand.description;
@@ -255,13 +269,64 @@
     if (shortcut) shortcut.setAttribute("aria-label", `Ver lista de consulta, ${consultationCount()} productos`);
   }
 
-  function addToConsultation(id) {
+  /* Scroll suave solo si el usuario no pidió movimiento reducido */
+  function scrollBehavior() {
+    return typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  }
+
+  /* Bloqueo de scroll del fondo para el diálogo de producto. En iOS
+     "overflow:hidden" en <body> no alcanza: además fijamos el body y
+     devolvemos la posición al cerrar. */
+  let scrollLocks = 0, scrollLockY = 0;
+  function lockScroll() {
+    if (scrollLocks === 0) {
+      scrollLockY = window.scrollY;
+      document.body.classList.add("no-scroll");
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollLockY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+    }
+    scrollLocks += 1;
+  }
+  function unlockScroll() {
+    scrollLocks = Math.max(0, scrollLocks - 1);
+    if (scrollLocks === 0) {
+      document.body.classList.remove("no-scroll");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollLockY);
+    }
+  }
+
+  /* Confirmación breve en el botón de alta: en mobile la lista queda
+     fuera de pantalla y sin esto no hay forma de saber que entró. */
+  function flashAdded(button) {
+    if (!button) return;
+    const original = button.textContent;
+    button.textContent = "✓ Agregado";
+    button.classList.add("is-added");
+    window.setTimeout(() => {
+      if (button.isConnected) {
+        button.textContent = original;
+        button.classList.remove("is-added");
+      }
+    }, 1600);
+  }
+
+  function addToConsultation(id, sourceButton) {
     if (!productsById.has(id)) return;
     const existing = state.consultation.find((item) => item.id === id);
     if (existing) existing.quantity = Math.min(999, existing.quantity + 1);
     else state.consultation.push({ id, quantity: 1 });
     saveConsultation();
     renderConsultation();
+    flashAdded(sourceButton);
     const feedback = $("#consultation-feedback");
     if (feedback && cfg.contact.whatsapp) feedback.textContent = `${productsById.get(id).name} agregado a la lista.`;
   }
@@ -323,7 +388,23 @@
     count.textContent = invalidRange
       ? "El precio mínimo no puede superar al máximo."
       : `${visibleProducts.length} ${visibleProducts.length === 1 ? "producto" : "productos"}`;
-    empty.hidden = visibleProducts.length > 0;
+    // Con rango inválido manda el mensaje de error del conteo: no se
+    // muestra además "sin resultados", que lo contradeciría.
+    empty.hidden = visibleProducts.length > 0 || invalidRange;
+    // Estado vacío accionable: si hay búsqueda o filtros activos, una
+    // salida de un clic para volver al catálogo completo.
+    const hasFilters = Boolean(term || selectedCategory || selectedSubcategory || min !== null || max !== null);
+    empty.innerHTML = esc(cfg.catalog.emptyText) +
+      (visibleProducts.length === 0 && !invalidRange && hasFilters
+        ? '<br><button type="button" class="button button--secondary" id="catalog-reset">Limpiar búsqueda y filtros</button>'
+        : "");
+    // Los atajos de rubro reflejan el filtro activo (estado accesible).
+    $$("[data-category-filter]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.getAttribute("data-category-filter") === selectedCategory));
+    });
+    // Botón "Limpiar" del campo de búsqueda: solo cuando hay texto.
+    const clearSearch = $("#catalog-search-clear");
+    if (clearSearch) clearSearch.hidden = !(search && search.value !== "");
   }
 
   function updateSubcategoryOptions() {
@@ -352,6 +433,30 @@
       if (event.target.matches("#catalog-category, #catalog-subcategory, #catalog-sort, #catalog-min-price, #catalog-max-price")) updateCatalog();
     });
     main.addEventListener("click", (event) => {
+      if (event.target.closest("#catalog-reset")) {
+        ["#catalog-search", "#catalog-min-price", "#catalog-max-price"].forEach((selector) => {
+          const field = $(selector);
+          if (field) field.value = "";
+        });
+        const categorySelect = $("#catalog-category");
+        if (categorySelect) categorySelect.value = "";
+        updateSubcategoryOptions();
+        const subcategorySelect = $("#catalog-subcategory");
+        if (subcategorySelect) subcategorySelect.value = "";
+        updateCatalog();
+        const searchField = $("#catalog-search");
+        if (searchField) searchField.focus();
+        return;
+      }
+      if (event.target.closest("#catalog-search-clear")) {
+        const searchField = $("#catalog-search");
+        if (searchField) {
+          searchField.value = "";
+          searchField.focus();
+          updateCatalog();
+        }
+        return;
+      }
       const categoryButton = event.target.closest("[data-category-filter]");
       if (categoryButton) {
         const select = $("#catalog-category");
@@ -359,11 +464,11 @@
           select.value = categoryButton.getAttribute("data-category-filter");
           updateSubcategoryOptions();
           updateCatalog();
-          $("#catalogo").scrollIntoView({ behavior: "smooth", block: "start" });
+          $("#catalogo").scrollIntoView({ behavior: scrollBehavior(), block: "start" });
         }
       }
       const addButton = event.target.closest("[data-product-add]");
-      if (addButton) addToConsultation(addButton.getAttribute("data-product-add"));
+      if (addButton) addToConsultation(addButton.getAttribute("data-product-add"), addButton);
       const detailButton = event.target.closest("[data-product-details]");
       if (detailButton) openProductDialog(detailButton.getAttribute("data-product-details"));
     });
@@ -414,6 +519,7 @@
     content.innerHTML = productDetailMarkup(product);
     bindProductImageFallbacks(content);
     dialog.showModal();
+    lockScroll();
   }
 
   function initProductDialog() {
@@ -421,8 +527,19 @@
     const close = $("#product-dialog-close");
     if (!dialog || !close) return;
     close.addEventListener("click", () => dialog.close());
+    // El scroll del fondo se congela mientras la ficha está abierta y se
+    // libera al cerrar (cualquiera sea el motivo: botón, Escape o clic).
+    dialog.addEventListener("close", unlockScroll);
     dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) dialog.close();
+      if (event.target === dialog) {
+        // Cerrar solo si el clic cayó FUERA del rectángulo del diálogo:
+        // el padding interno no debe descartar la ficha.
+        const rect = dialog.getBoundingClientRect();
+        const outside = event.clientX < rect.left || event.clientX > rect.right ||
+          event.clientY < rect.top || event.clientY > rect.bottom;
+        if (outside) dialog.close();
+        return;
+      }
       const imageButton = event.target.closest("[data-product-gallery-index]");
       if (!imageButton) return;
       const productId = $("#product-dialog-content .product-detail .button[data-product-add]");
@@ -484,25 +601,17 @@
     return lines.join("\n");
   }
 
-  function renderConsultation() {
-    const list = $("#consultation-list");
+  /* Resumen, controles y envío de la lista. Separado del render de la
+     lista para poder actualizarlo sin rehacer el DOM (así la cantidad
+     no pierde el foco del input). */
+  function updateConsultationMeta() {
     const empty = $("#consultation-empty");
     const summary = $("#consultation-summary");
     const clear = $("#consultation-clear");
     const send = $("#consultation-send");
     const feedback = $("#consultation-feedback");
-    if (!list || !empty || !summary || !clear || !send) return;
+    if (!empty || !summary || !clear || !send) return;
     const entries = state.consultation.map((entry) => ({ entry, product: productsById.get(entry.id) })).filter((item) => item.product);
-    list.innerHTML = entries.map(({ entry, product }) => `<li class="consultation-item" data-consultation-id="${esc(product.id)}">
-      <div class="consultation-item__details"><strong>${esc(product.name)}</strong>
-        ${cfg.display.showSku && product.sku ? `<span>SKU ${esc(product.sku)}</span>` : ""}
-        ${cfg.display.showPrices ? `<span>${product.price !== null ? formatPrice(product.price) : "Precio a consultar"}</span>` : ""}
-      </div>
-      <label class="consultation-item__quantity">Cantidad
-        <input type="number" min="1" max="999" step="1" value="${entry.quantity}" data-consultation-quantity="${esc(product.id)}" aria-label="Cantidad de ${esc(product.name)}">
-      </label>
-      <button type="button" class="button button--secondary" data-consultation-remove="${esc(product.id)}">Quitar</button>
-    </li>`).join("");
     empty.hidden = entries.length > 0;
     clear.disabled = entries.length === 0;
     const count = consultationCount();
@@ -523,6 +632,23 @@
     }
   }
 
+  function renderConsultation() {
+    const list = $("#consultation-list");
+    if (!list) return;
+    const entries = state.consultation.map((entry) => ({ entry, product: productsById.get(entry.id) })).filter((item) => item.product);
+    list.innerHTML = entries.map(({ entry, product }) => `<li class="consultation-item" data-consultation-id="${esc(product.id)}">
+      <div class="consultation-item__details"><strong>${esc(product.name)}</strong>
+        ${cfg.display.showSku && product.sku ? `<span>SKU ${esc(product.sku)}</span>` : ""}
+        ${cfg.display.showPrices ? `<span>${product.price !== null ? formatPrice(product.price) : "Precio a consultar"}</span>` : ""}
+      </div>
+      <label class="consultation-item__quantity">Cantidad
+        <input type="number" min="1" max="999" step="1" value="${entry.quantity}" data-consultation-quantity="${esc(product.id)}" aria-label="Cantidad de ${esc(product.name)}">
+      </label>
+      <button type="button" class="button button--secondary" data-consultation-remove="${esc(product.id)}">Quitar</button>
+    </li>`).join("");
+    updateConsultationMeta();
+  }
+
   function initConsultation() {
     const list = $("#consultation-list");
     const clear = $("#consultation-clear");
@@ -534,6 +660,20 @@
           state.consultation = state.consultation.filter((item) => item.id !== remove.getAttribute("data-consultation-remove"));
           saveConsultation();
           renderConsultation();
+          // El botón desapareció con el artículo: el foco pasa al
+          // siguiente "Quitar", o a "Vaciar lista", o al estado vacío.
+          const next = list.querySelector("[data-consultation-remove]");
+          if (next) {
+            next.focus();
+          } else if (clear && !clear.disabled) {
+            clear.focus();
+          } else {
+            const empty = $("#consultation-empty");
+            if (empty) {
+              empty.tabIndex = -1;
+              empty.focus();
+            }
+          }
         }
       });
       list.addEventListener("change", (event) => {
@@ -551,7 +691,9 @@
         const item = state.consultation.find((entry) => entry.id === input.getAttribute("data-consultation-quantity"));
         if (item) item.quantity = quantity;
         saveConsultation();
-        renderConsultation();
+        // Solo se actualiza resumen/contador/envío: la lista no se
+        // rehace, así el input conserva el foco (nadie "roba" el Tab).
+        updateConsultationMeta();
       });
     }
     if (clear) clear.addEventListener("click", () => {
@@ -564,7 +706,7 @@
     if (shortcut) shortcut.addEventListener("click", () => {
       const section = $("#consulta");
       const heading = $("#consultation-title");
-      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (section) section.scrollIntoView({ behavior: scrollBehavior(), block: "start" });
       if (heading) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
@@ -702,6 +844,7 @@
           <div class="catalog-controls" id="catalog-controls" role="search">
             <label class="catalog-search">Buscar
               <input id="catalog-search" type="search" autocomplete="off" placeholder="${esc(section.searchPlaceholder)}">
+              <button type="button" class="button button--secondary catalog-search__clear" id="catalog-search-clear" hidden>Limpiar búsqueda</button>
             </label>
             <label>Categoría
               <select id="catalog-category"><option value="">Todas</option>${categoryOptions}</select>
@@ -1065,6 +1208,7 @@
     const restore = () => {
       state.lightboxOpen = false;
       setBackgroundInert("lightbox", false);
+      unlockScroll();
       if (opener && opener.isConnected) opener.focus();
     };
 
@@ -1089,6 +1233,7 @@
       update();
       state.lightboxOpen = true;
       setBackgroundInert("lightbox", true);
+      lockScroll();
       if (hasModal) dialog.showModal();
       else {
         dialog.setAttribute("open", "");

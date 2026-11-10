@@ -1,4 +1,4 @@
-/* Pruebas de config-core.js (sin dependencias). Uso: node premium/tests/core.test.js */
+/* Pruebas de config-core.js (sin dependencias). Uso: node modelo-b/tests/core.test.js */
 "use strict";
 const assert = require("assert"), path = require("path");
 const core = require(path.join(__dirname, "..", "config-core.js"));
@@ -56,8 +56,8 @@ t("esc() neutraliza HTML", () => assert.equal(core.esc('<img src=x onerror="a()"
 t("SEO: sin seo.url no hay canonical ni og:image; con url sí", () => {
   const a = norm({ brand: { name: "X" }, seo: { image: "a.jpg" }, hero: { title: "t", image: "h.jpg" } }).cfg;
   let s = core.buildSeo(a, ["hero"]); assert.equal(s.canonical, ""); assert.equal(s.ogImage, ""); assert.equal(s.heroPreload, "../img/h.jpg");
-  const b = norm({ brand: { name: "X" }, seo: { url: "https://x.com/premium/", image: "a.jpg" } }).cfg;
-  s = core.buildSeo(b, []); assert.equal(s.canonical, "https://x.com/premium/"); assert.equal(s.ogImage, "https://x.com/img/a.jpg");
+  const b = norm({ brand: { name: "X" }, seo: { url: "https://x.com/modelo-b/", image: "a.jpg" } }).cfg;
+  s = core.buildSeo(b, []); assert.equal(s.canonical, "https://x.com/modelo-b/"); assert.equal(s.ogImage, "https://x.com/img/a.jpg");
 });
 t("SEO: seo.url inválida se descarta con aviso", () => { const r = norm({ brand: { name: "X" }, seo: { url: "javascript:alert(1)" } }); assert.equal(r.cfg.seo.url, ""); assert.ok(r.issues.some((i) => i.path === "seo.url")); });
 t("SEO: renderSeoBlock escapa y neutraliza </script> en JSON-LD", () => {

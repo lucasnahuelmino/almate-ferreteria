@@ -13,6 +13,8 @@ const MODELO_D_CONFIG = {
     short: "FREN",
     tagline: "Catálogo de productos",
     description: "Ferretería de barrio en Quilmes.",
+    logo: "logo_local.png",
+    logoAlt: "Logo de FREN Ferreterías",
   },
 
   theme: {
