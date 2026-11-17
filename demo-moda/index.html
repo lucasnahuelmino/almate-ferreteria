@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+  <!-- ALMATE:MODA:SEO:START -->
+  <title>AMARA · Indumentaria contemporánea</title>
+  <meta name="description" content="Prendas y accesorios de líneas simples para el día a día. Explorá el catálogo, elegí color y talle, y consultá por WhatsApp.">
+  <meta name="theme-color" content="#171717">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AMARA · Indumentaria contemporánea">
+  <meta property="og:description" content="Prendas y accesorios de líneas simples para el día a día. Explorá el catálogo, elegí color y talle, y consultá por WhatsApp.">
+  <meta property="og:site_name" content="AMARA">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="AMARA · Indumentaria contemporánea">
+  <meta name="twitter:description" content="Prendas y accesorios de líneas simples para el día a día. Explorá el catálogo, elegí color y talle, y consultá por WhatsApp.">
+  <script type="application/ld+json" id="ld-json">{"@context":"https://schema.org","@type":"ClothingStore","name":"AMARA","description":"Prendas y accesorios de líneas simples, pensados para el día a día.","email":"hola@amara.demo","address":{"@type":"PostalAddress","streetAddress":"Showroom · Recoleta, Buenos Aires"},"sameAs":["https://instagram.com/amara.demo"]}</script>
+  <!-- ALMATE:MODA:SEO:END -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <div class="announcement" id="announcement" hidden></div>
+
+  <header class="site-header" id="site-header">
+    <div class="container header__inner">
+      <a class="brand" id="brand-link" href="#inicio" aria-label="AMARA, inicio">
+        <span class="brand__mark" id="brand-wordmark">AMARA</span>
+        <img class="brand__logo" id="brand-logo" src="" alt="" hidden>
+      </a>
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <ul class="nav__list" id="nav-list"></ul>
+      </nav>
+      <div class="header__actions">
+        <form class="header__search" id="header-search-form" role="search" aria-label="Buscar prendas">
+          <input type="search" id="header-search" placeholder="Buscar…" aria-label="Buscar prendas">
+        </form>
+        <button class="header__cart" id="cart-open" type="button" aria-label="Abrir carrito de consulta">
+          <span aria-hidden="true">Bolsa</span><span class="header__cart-count" id="cart-count" hidden>0</span>
+        </button>
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-search" id="mobile-search" hidden>
+      <input type="search" id="mobile-search-input" placeholder="Buscar prendas…" aria-label="Buscar prendas">
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript>
+      <p class="catalog__empty" role="alert">Este sitio necesita JavaScript para mostrar el catálogo. Consultanos por WhatsApp mientras tanto.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <div class="cart-overlay" id="cart-overlay" hidden></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Carrito de consulta" hidden>
+    <header class="cart-drawer__head">
+      <h2>Tu selección</h2>
+      <button id="cart-close" type="button">Cerrar</button>
+    </header>
+    <div class="cart-drawer__body">
+      <p class="cart-drawer__empty" id="cart-empty">Todavía no agregaste prendas.</p>
+      <div class="cart-items" id="cart-items"></div>
+    </div>
+    <footer class="cart-drawer__foot">
+      <div class="cart-drawer__total"><span>Total estimado</span><strong id="cart-total"></strong></div>
+      <a class="btn btn--solid" id="cart-whatsapp" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</a>
+      <button class="cart-drawer__clear" id="cart-clear" type="button" disabled>Vaciar selección</button>
+    </footer>
+  </aside>
+
+  <dialog class="modal" id="product-modal" aria-label="Detalle de producto">
+    <button class="modal__close" id="pd-close" type="button" aria-label="Cerrar">×</button>
+    <div class="modal__media"><img id="pd-image" src="" alt=""></div>
+    <div class="modal__body">
+      <span class="modal__category" id="pd-category"></span>
+      <h3 class="modal__name" id="pd-name"></h3>
+      <p class="modal__description" id="pd-description"></p>
+      <div class="modal__prices"><strong id="pd-price"></strong><s id="pd-old" hidden></s></div>
+      <fieldset class="modal__field">
+        <legend>Color</legend>
+        <div class="options" id="pd-colors"></div>
+      </fieldset>
+      <fieldset class="modal__field">
+        <legend>Talle</legend>
+        <div class="options options--sizes" id="pd-sizes"></div>
+      </fieldset>
+      <p class="modal__availability" id="pd-availability" aria-live="polite"></p>
+      <div class="modal__qty">
+        <span>Unidades</span>
+        <button id="pd-qty-minus" type="button" aria-label="Restar una unidad">−</button>
+        <span id="pd-qty">1</span>
+        <button id="pd-qty-plus" type="button" aria-label="Sumar una unidad">+</button>
+      </div>
+      <button class="btn btn--solid modal__add" id="pd-add" type="button">Agregar al carrito</button>
+      <p class="modal__error" id="pd-error" role="alert" hidden></p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/config.moda.js"></script>
+  <script src="js/config-core.moda.js"></script>
+  <script src="js/products.moda.js"></script>
+  <script src="js/whatsapp.moda.js"></script>
+  <script src="js/cart.moda.js"></script>
+  <script src="js/catalog.moda.js"></script>
+  <script src="js/product-detail.moda.js"></script>
+  <script src="js/engine.moda.js"></script>
+</body>
+</html>

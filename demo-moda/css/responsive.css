@@ -1,0 +1,221 @@
+/* ==========================================================================
+   ALMATE · Demo Moda · responsive.css
+   Ajustes por ancho de pantalla.
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .catalog__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .benefits__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer__grid {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .footer__contact {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 899px) {
+  .site-nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    display: none;
+    max-height: calc(100dvh - 70px);
+    overflow-y: auto;
+    padding: 1rem var(--gutter) 1.4rem;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--offwhite);
+  }
+
+  .is-menu-open .site-nav {
+    display: block;
+  }
+
+  .nav__list {
+    display: grid;
+    gap: 0;
+  }
+
+  .nav__list li {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav__list a,
+  .nav__list .nav-filter {
+    display: block;
+    width: 100%;
+    padding: 0.9rem 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    text-align: left;
+  }
+
+  .nav__list a::after,
+  .nav__list .nav-filter::after {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .header__search {
+    display: none;
+  }
+
+  .mobile-search {
+    display: block;
+  }
+
+  .mobile-search[hidden] {
+    display: none;
+  }
+
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__media {
+    order: -1;
+    aspect-ratio: 16 / 10;
+  }
+
+  .collection__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .faq__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lookbook__grid {
+    grid-auto-rows: 120px;
+  }
+
+  .lookbook__item:nth-child(1) {
+    grid-column: span 6;
+    grid-row: span 3;
+  }
+
+  .lookbook__item:nth-child(2),
+  .lookbook__item:nth-child(3) {
+    grid-column: span 6;
+    grid-row: span 2;
+  }
+
+  .lookbook__item:nth-child(4) {
+    grid-column: span 12;
+    grid-row: span 2;
+  }
+}
+
+@media (max-width: 760px) {
+  .categories__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .catalog__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .catalog__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .catalog__search {
+    max-width: none;
+  }
+
+  .catalog__toolbar select {
+    width: 100%;
+  }
+
+  .collection__products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer__contact {
+    grid-column: 1 / -1;
+  }
+
+  .modal__media {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 560px) {
+  .benefits__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lookbook__grid {
+    grid-auto-rows: 110px;
+  }
+
+  .collection__products {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .filter-group {
+    align-items: flex-start;
+  }
+
+  .filter-group__label {
+    flex: 0 0 100%;
+  }
+
+  .modal__close {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer__nav,
+  .footer__contact {
+    grid-column: 1;
+  }
+
+  .footer__bottom-inner {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 380px) {
+  .catalog__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* En pantallas táctiles, la acción de la tarjeta siempre es visible. */
+@media (hover: none) {
+  .cutout__cta {
+    opacity: 1;
+    transform: none;
+  }
+}
