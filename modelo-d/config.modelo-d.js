@@ -183,7 +183,7 @@ const MODELO_D_CONFIG = {
       },
       {
         q: "¿Qué medios de pago aceptan?",
-        a: "Consultá los medios disponibles al momento de la compra. No publicamos condiciones que puedan cambiar sin aviso.",
+        a: "Aceptamos tarjetas de crédito y débito, efectivo y MercadoPago.",
       },
     ],
   },
@@ -194,8 +194,7 @@ const MODELO_D_CONFIG = {
     lead: "Contanos qué necesitás. Si nos mandás una foto o una lista, mejor.",
     phone: "(011) 4250-2865",
     phoneHref: "tel:+541142502865",
-    email: "info@frenferreterias.com.ar",
-    whatsapp: "541142502865",
+    email: "frenferret@gmail.com",
     whatsappMessage: "Hola FREN, quisiera realizar una consulta.",
     address: "Andrés Baranda 1309",
     locality: "Quilmes",
@@ -219,7 +218,7 @@ const MODELO_D_CONFIG = {
   },
 
   footer: {
-    note: "Ferretería de barrio en Quilmes.",
+    note: "Ferretería de barrio en Quilmes Oeste.",
     creditUrl: "",
     navigationLabel: "Navegación",
     contactLabel: "Contacto",
