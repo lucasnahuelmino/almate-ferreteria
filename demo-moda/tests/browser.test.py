@@ -76,7 +76,7 @@ try:
 
         print("\n[1] Carga, renderizado y SEO")
         context, page = open_page(browser)
-        check("título y meta descripción", page.title() == "AMARA · Indumentaria contemporánea" and
+        check("título y meta descripción", page.title() == "ALMATE · Indumentaria contemporánea" and
               page.locator('meta[name="description"]').count() == 1)
         check("un solo h1", page.locator("h1").count() == 1)
         check("catálogo renderiza 8 tarjetas Cutout", page.locator("#catalog-grid .cutout").count() == 8)

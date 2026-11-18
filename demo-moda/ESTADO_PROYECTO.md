@@ -34,7 +34,7 @@ pagos. La lógica se separa en módulos:
   «reemplazar por fotografía»). Son recursos reales y reemplazables; el cliente
   sustituye las rutas por fotos propias. El motor además tiene un fallback
   neutro para imágenes faltantes.
-- **Contenido de demostración**: marca «AMARA», textos, precios y contacto son
+- **Contenido de demostración**: marca «ALMATE», textos, precios y contacto son
   de muestra (marcados en `config.moda.js`). No se inventan datos comerciales
   reales; `seo.url` está vacío (sin canonical ni imagen social absoluta).
 - **Disponibilidad sin stock numérico**: las combinaciones inexistentes se

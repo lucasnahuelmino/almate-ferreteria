@@ -44,7 +44,7 @@ const MODA_CONFIG = {
   /* Contacto de DEMOSTRACIÓN. Reemplazar antes de publicar. */
   contact: {
     whatsapp: "5491130000000", // número de demostración — reemplazar
-    instagram: "https://instagram.com/amara.demo",
+    instagram: "https://instagram.com/almate.demo",
     email: "hola@almate.demo",
     address: "Showroom · Recoleta, Buenos Aires",
     hours: "Lun a Sáb · 10 a 20 h",
@@ -149,11 +149,11 @@ const MODA_CONFIG = {
   },
 
   seo: {
-    title: "AMARA · Indumentaria contemporánea",
-    description: "Prendas y accesorios de líneas simples para el día a día. Explorá el catálogo, elegí color y talle, y consultá por WhatsApp.",
-    url: "", // dominio real, ej. "https://www.amara.com.ar/" (vacío = sin canonical ni imagen social)
-    image: "assets/hero/hero-main.svg",
-    imageAlt: "Campaña editorial de AMARA",
+    title: "ALMATE · Indumentaria contemporánea",
+    description: "Descubrí una selección de prendas y accesorios pensados para expresar tu estilo. Explorá la colección y consultá por WhatsApp.",
+    url: "", // dominio real, ej. "https://www.almate.com.ar/" (vacío = sin canonical ni imagen social)
+    image: "assets/hero/hero-main.webp",
+    imageAlt: "Campaña editorial de ALMATE",
     locale: "es_AR",
   },
 

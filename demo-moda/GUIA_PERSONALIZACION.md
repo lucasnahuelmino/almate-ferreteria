@@ -12,8 +12,8 @@ En `js/config.moda.js`, dentro de `brand`:
 
 ```js
 brand: {
-  name: "AMARA",                 // nombre comercial
-  wordmark: "AMARA",             // texto del logo (si no hay imagen)
+  name: "ALMATE",                 // nombre comercial
+  wordmark: "ALMATE",             // texto del logo (si no hay imagen)
   tagline: "Indumentaria contemporánea",
   description: "Prendas y accesorios de líneas simples…",
   logo: "",                      // opcional: ruta a un logo en imagen
@@ -153,10 +153,10 @@ En `config.moda.js`:
 
 ```js
 seo: {
-  title: "AMARA · Indumentaria contemporánea",
+  title: "ALMATE · Indumentaria contemporánea",
   description: "…",
   url: "",   // dominio real, ej. "https://www.tutienda.com/" (con barra final)
-  image: "assets/hero/hero-main.svg",
+  image: "assets/hero/hero-main.webp",
   imageAlt: "…",
   locale: "es_AR",
 },

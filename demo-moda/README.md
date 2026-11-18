@@ -9,7 +9,7 @@ se envía por WhatsApp.
 pedidos confirmados, y no tiene backend. El visitante explora prendas, elige
 variantes, arma su selección y la envía como consulta por WhatsApp.
 
-> **Demo:** todos los datos (marca «AMARA», textos, precios, contacto y
+> **Demo:** todos los datos (marca «ALMATE», textos, precios, contacto y
 > horarios) y las imágenes son de **demostración**. Reemplazalos por datos
 > reales y fotografías con licencia antes de publicar.
 
