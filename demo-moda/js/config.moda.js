@@ -18,8 +18,8 @@ const MODA_CONFIG = {
   assetBase: "assets/",
 
   brand: {
-    name: "AMARA",
-    wordmark: "AMARA",
+    name: "ALMATE",
+    wordmark: "ALMATE",
     tagline: "Indumentaria contemporánea",
     description: "Prendas y accesorios de líneas simples, pensados para el día a día.",
     logo: "", // opcional: ruta a un logo en imagen; vacío = wordmark tipográfico
@@ -45,14 +45,14 @@ const MODA_CONFIG = {
   contact: {
     whatsapp: "5491130000000", // número de demostración — reemplazar
     instagram: "https://instagram.com/amara.demo",
-    email: "hola@amara.demo",
+    email: "hola@almate.demo",
     address: "Showroom · Recoleta, Buenos Aires",
     hours: "Lun a Sáb · 10 a 20 h",
   },
 
   announcement: {
     enabled: true,
-    text: "Nueva colección 2026 · Consultas por WhatsApp",
+    text: "Nueva colección 2027 · 10% OFF en tu primera compra · Consultá por WhatsApp",
     link: "", // opcional
   },
 
@@ -67,10 +67,10 @@ const MODA_CONFIG = {
   ],
 
   hero: {
-    eyebrow: "Nueva temporada",
+    eyebrow: "Nueva temporada Verano 2027",
     title: "Vestirse también es una forma de expresión.",
     subtitle: "Descubrí prendas pensadas para acompañar tu estilo.",
-    image: "assets/hero/hero-main.svg",
+    image: "assets/hero/hero-main.webp",
     imageAlt: "Campaña editorial de la nueva temporada",
     ctaLabel: "Explorar colección",
     ctaAnchor: "#catalogo",
