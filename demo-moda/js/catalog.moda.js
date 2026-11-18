@@ -190,9 +190,45 @@
       if (emptyEl) emptyEl.hidden = visible.length !== 0;
     }
 
+    function activeFilterCount() {
+      let count = 0;
+      if (state.category) count += 1;
+      if (state.gender) count += 1;
+      if (state.size) count += 1;
+      if (state.color) count += 1;
+      if (state.priceRange && state.priceRange !== "all") count += 1;
+      if (state.sale) count += 1;
+      return count;
+    }
+
+    function updateIndicators() {
+      const total = activeFilterCount();
+      const countBadge = document.getElementById("filter-count");
+      if (countBadge) {
+        countBadge.textContent = String(total);
+        countBadge.hidden = total === 0;
+      }
+      if (toggleButton) toggleButton.classList.toggle("is-active", total > 0);
+      const groupState = {
+        category: state.category,
+        gender: state.gender,
+        size: state.size,
+        color: state.color,
+        price: state.priceRange && state.priceRange !== "all" ? state.priceRange : "",
+      };
+      document.querySelectorAll(".filter-group[data-filter-group]").forEach((group) => {
+        const key = group.getAttribute("data-filter-group");
+        const badge = group.querySelector(".filter-group__badge");
+        if (!badge) return;
+        badge.textContent = "1";
+        badge.hidden = !groupState[key];
+      });
+    }
+
     function refresh() {
       renderControls();
       render();
+      updateIndicators();
     }
 
     function applyFilter(filter) {
@@ -242,14 +278,30 @@
     if (priceSelect) {
       priceSelect.addEventListener("change", () => {
         state.priceRange = priceSelect.value;
-        render();
+        refresh();
       });
     }
     if (clearButton) clearButton.addEventListener("click", reset);
+    function setPanelOpen(open) {
+      if (!filtersPanel) return;
+      filtersPanel.classList.toggle("is-open", open);
+      if (toggleButton) toggleButton.setAttribute("aria-expanded", String(open));
+    }
     if (toggleButton && filtersPanel) {
       toggleButton.addEventListener("click", () => {
-        const open = filtersPanel.classList.toggle("is-open");
-        toggleButton.setAttribute("aria-expanded", String(open));
+        setPanelOpen(!filtersPanel.classList.contains("is-open"));
+      });
+      document.addEventListener("click", (event) => {
+        if (!filtersPanel.classList.contains("is-open")) return;
+        if (filtersPanel.contains(event.target)) return;
+        if (toggleButton.contains(event.target)) return;
+        setPanelOpen(false);
+      }, true);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && filtersPanel.classList.contains("is-open")) {
+          setPanelOpen(false);
+          toggleButton.focus();
+        }
       });
     }
     [categoriesEl, gendersEl, sizesEl, colorsEl].forEach((panel) => {

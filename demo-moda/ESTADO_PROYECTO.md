@@ -1,7 +1,7 @@
 # ALMATE · Demo Moda — Estado del proyecto
 
-Última actualización: 2026-11-17 · Estado: **implementada y validada en
-Chromium; sin commit/push/deploy.**
+Última actualización: 2026-11-17 · Estado: **implementada, con filtros y footer
+refinados; validada en Chromium.**
 
 ## Objetivo
 
@@ -82,6 +82,45 @@ pagos. La lógica se separa en módulos:
 - En el test inicial, el primer producto por precio era la bufanda (más barata
   que la remera) y el mensaje de WhatsApp está URL-codificado; se ajustaron las
   aserciones.
+
+## Refinamiento de filtros y footer — 2026-11-17
+
+- **Barra de herramientas**: una sola línea con buscador a la izquierda, acceso
+  «Filtros» (con contador de activos) y orden a la derecha; en móvil se apila
+  sin desbordes.
+- **Panel de filtros desplegable**: los cinco grupos (Categoría, Género, Talle,
+  Color y Precio) son `<details>/<summary>` independientes y accesibles, con
+  chevron rotatorio, borde fino y chips compactos. Se abre con «Filtros» y se
+  cierra con Escape o al hacer clic fuera; seleccionar una opción no cierra el
+  panel, para permitir combinar varios filtros.
+- **Indicadores**: contador de filtros activos en el botón y badge por grupo;
+  estado seleccionado inequívoco (`is-active`) en cada chip.
+- **Footer**: pasó de cuatro a **tres bloques** (Marca / Explorar / Contacto).
+  «Explorar» integra navegación y categorías (sin duplicados, en dos columnas);
+  contacto muestra WhatsApp, Instagram, email, dirección y horarios solo si
+  están configurados. Padding, separaciones e interlineado reducidos y franja
+  inferior baja.
+- **Limpieza de estilos**: la capa visual de `index.html` (estilos en línea) es
+  la fuente de estos componentes; se quitaron las reglas duplicadas de
+  `.catalog__toolbar`, `.catalog__filters`, `.filter-group`, `.chips`, `.chip`
+  y `.footer__*` de `layout.css`, `components.css` y `responsive.css`.
+
+### Archivos modificados
+
+- `js/engine.moda.js`: toolbar + panel de filtros + footer de tres bloques.
+- `js/catalog.moda.js`: contador, badges por grupo, cierre con Escape y clic fuera.
+- `index.html`: estilos en línea de toolbar/filtros/footer y media queries.
+- `css/layout.css`, `css/components.css`, `css/responsive.css`: limpieza de duplicados.
+- `tests/browser.test.py`: nuevos casos de filtros y footer.
+
+### Pruebas ejecutadas
+
+- `node --check` en `engine.moda.js` y `catalog.moda.js`: correcto.
+- `node demo-moda/tests/core.test.js`: **13/13**.
+- `python demo-moda/tests/browser.test.py`: **53/53** (se añadieron panel
+  desplegable, combinación de filtros, contador, limpieza, Escape, clic fuera y
+  footer de tres bloques).
+- `node demo-moda/tools/sync-seo.js --check`: correcto.
 
 ## Pendientes
 

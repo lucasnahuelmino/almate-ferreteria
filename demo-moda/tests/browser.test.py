@@ -113,18 +113,37 @@ try:
         check("orden por precio ascendente", page.locator("#catalog-grid .cutout__name").first.inner_text() == "Bufanda de Lana")
         context.close()
 
-        print("\n[4] Filtros")
+        print("\n[4] Filtros: panel desplegable, combinación, contador y limpieza")
         context, page = open_page(browser)
+        check("panel de filtros cerrado por defecto",
+              page.locator("#catalog-filters").evaluate("el => el.classList.contains('is-open')") is False)
         page.locator("#filter-toggle").click()
+        check("el botón abre el panel",
+              page.locator("#catalog-filters").evaluate("el => el.classList.contains('is-open')") is True)
+        page.locator('.filter-group[data-filter-group="category"] summary').click()
         page.locator('#filter-categories [data-category="abrigos"]').click()
         check("filtro por categoría", page.locator("#catalog-grid .cutout").count() == 1 and
               "Campera de Abrigo" in page.locator("#catalog-grid .cutout__name").inner_text())
+        check("indicador de filtros activos", page.locator("#filter-count").inner_text() == "1" and
+              page.locator("#filter-toggle").evaluate("el => el.classList.contains('is-active')") is True)
+        page.locator('.filter-group[data-filter-group="gender"] summary').click()
+        page.locator('#filter-genders [data-gender="mujer"]').click()
+        check("combinación categoría + género", page.locator("#catalog-grid .cutout").count() == 1)
+        check("contador refleja dos filtros", page.locator("#filter-count").inner_text() == "2")
         page.locator('#filter-categories [data-category=""]').click()
-        page.locator('#filter-genders [data-gender="hombre"]').click()
-        check("filtro por género", page.locator("#catalog-grid .cutout").count() == 3)
-        page.locator('#filter-genders [data-gender=""]').click()
+        check("quitar un filtro conserva el otro", page.locator("#catalog-grid .cutout").count() == 4 and
+              page.locator("#filter-count").inner_text() == "1")
         page.locator("#filter-clear").click()
-        check("limpiar filtros restaura el catálogo", page.locator("#catalog-grid .cutout").count() == 8)
+        check("limpiar restaura catálogo y contador", page.locator("#catalog-grid .cutout").count() == 8 and
+              page.locator("#filter-count").is_hidden())
+        page.locator("#filter-toggle").click()
+        page.keyboard.press("Escape")
+        check("Escape cierra el panel",
+              page.locator("#catalog-filters").evaluate("el => el.classList.contains('is-open')") is False)
+        page.locator("#filter-toggle").click()
+        page.locator("#catalog-count").click()
+        check("clic fuera cierra el panel",
+              page.locator("#catalog-filters").evaluate("el => el.classList.contains('is-open')") is False)
         context.close()
 
         print("\n[5] Ficha, variantes y validación")
@@ -179,6 +198,20 @@ try:
         check("sin número de WhatsApp no se habilita el envío",
               page.locator("#cart-whatsapp").get_attribute("href") is None or
               page.locator("#cart-whatsapp").is_disabled())
+        context.close()
+
+        print("\n[9] Footer compacto de tres bloques")
+        context, page = open_page(browser)
+        check("footer con tres bloques", page.locator(".footer__grid > *").count() == 3)
+        check("bloque Explorar integra navegación y categorías",
+              page.locator('.footer__nav[aria-label="Explorar"]').count() == 1 and
+              page.locator('.footer__nav[aria-label="Explorar"] li').count() >= 5)
+        check("sin enlaces de categoría duplicados",
+              page.locator('.footer__nav[aria-label="Explorar"]').inner_text().lower().count("accesorios") == 1)
+        check("crédito ALMATE en el footer",
+              "Desarrollado por ALMATE · Soluciones digitales" in page.locator("#footer-credit").inner_text())
+        check("footer sin desbordamiento",
+              page.evaluate("document.documentElement.scrollWidth <= document.documentElement.clientWidth"))
         context.close()
 
         browser.close()

@@ -201,16 +201,34 @@
           ${sectionHead("Catálogo", cfg.catalog.title, cfg.catalog.subtitle, "catalog")}
           <div class="catalog__toolbar">
             <label class="catalog__search"><span class="catalog__search-icon" aria-hidden="true">⌕</span><input id="filter-search" type="search" placeholder="Buscar prendas…" aria-label="Buscar prendas"></label>
-            <button id="filter-toggle" class="btn btn--ghost" type="button" aria-expanded="false" aria-controls="catalog-filters">Filtros</button>
-            <select id="filter-sort" aria-label="Ordenar productos"></select>
+            <button id="filter-toggle" class="btn btn--ghost filter-toggle" type="button" aria-expanded="false" aria-controls="catalog-filters">Filtros <span class="filter-toggle__count" id="filter-count" hidden></span></button>
+            <label class="catalog__sort"><span class="catalog__sort-label">Orden</span><select id="filter-sort" aria-label="Ordenar productos"></select></label>
           </div>
           <div class="catalog__filters" id="catalog-filters">
-            <div class="filter-group"><span class="filter-group__label">Categoría</span><div class="chips" id="filter-categories"></div></div>
-            <div class="filter-group"><span class="filter-group__label">Género</span><div class="chips" id="filter-genders"></div></div>
-            <div class="filter-group"><span class="filter-group__label">Talle</span><div class="chips" id="filter-sizes"></div></div>
-            <div class="filter-group"><span class="filter-group__label">Color</span><div class="chips" id="filter-colors"></div></div>
-            <div class="filter-group"><span class="filter-group__label">Precio</span><select id="filter-price" aria-label="Filtrar por precio"></select></div>
-            <button id="filter-clear" class="btn btn--text" type="button">Limpiar filtros</button>
+            <div class="catalog__filters-bar">
+              <span class="catalog__filters-title">Filtros</span>
+              <button id="filter-clear" class="btn btn--text" type="button">Limpiar</button>
+            </div>
+            <details class="filter-group" data-filter-group="category">
+              <summary><span>Categoría</span><span class="filter-group__badge" hidden></span><span class="filter-group__chevron" aria-hidden="true"></span></summary>
+              <div class="chips" id="filter-categories"></div>
+            </details>
+            <details class="filter-group" data-filter-group="gender">
+              <summary><span>Género</span><span class="filter-group__badge" hidden></span><span class="filter-group__chevron" aria-hidden="true"></span></summary>
+              <div class="chips" id="filter-genders"></div>
+            </details>
+            <details class="filter-group" data-filter-group="size">
+              <summary><span>Talle</span><span class="filter-group__badge" hidden></span><span class="filter-group__chevron" aria-hidden="true"></span></summary>
+              <div class="chips chips--sizes" id="filter-sizes"></div>
+            </details>
+            <details class="filter-group" data-filter-group="color">
+              <summary><span>Color</span><span class="filter-group__badge" hidden></span><span class="filter-group__chevron" aria-hidden="true"></span></summary>
+              <div class="chips" id="filter-colors"></div>
+            </details>
+            <details class="filter-group" data-filter-group="price">
+              <summary><span>Precio</span><span class="filter-group__badge" hidden></span><span class="filter-group__chevron" aria-hidden="true"></span></summary>
+              <div class="filter-group__select"><select id="filter-price" aria-label="Filtrar por precio"></select></div>
+            </details>
           </div>
           <p class="catalog__count" id="catalog-count" aria-live="polite"></p>
           <div class="catalog__grid" id="catalog-grid"></div>
@@ -306,8 +324,11 @@
     productApi.products.forEach((product) => {
       if (!categories.some((item) => item.id === product.category)) categories.push({ id: product.category, name: productApi.categoryLabel(product.category) });
     });
+    const navLabels = new Set(cfg.navigation.map((item) => item.label.trim().toLowerCase()));
     const navLinks = cfg.navigation.map((item) => (item.anchor ? `<li><a href="${esc(item.anchor)}" data-nav-anchor>${esc(item.label)}</a></li>` : `<li><button type="button" data-nav-filter ${filterAttrs(item.filter)}>${esc(item.label)}</button></li>`)).join("");
-    const categoryLinks = categories.map((category) => `<li><button type="button" data-nav-filter data-category="${esc(category.id)}">${esc(category.name)}</button></li>`).join("");
+    const categoryLinks = categories
+      .filter((category) => !navLabels.has(category.name.trim().toLowerCase()))
+      .map((category) => `<li><button type="button" data-nav-filter data-category="${esc(category.id)}">${esc(category.name)}</button></li>`).join("");
     const contact = [];
     if (cfg.contact.whatsapp) contact.push(`<li><a href="https://wa.me/${esc(cfg.contact.whatsapp)}" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>`);
     if (cfg.contact.instagram) contact.push(`<li><a href="${esc(cfg.contact.instagram)}" target="_blank" rel="noopener noreferrer">Instagram</a></li>`);
@@ -320,8 +341,7 @@
         <span class="footer__wordmark">${esc(cfg.brand.wordmark || cfg.brand.name)}</span>
         <p>${esc(cfg.brand.description)}</p>
       </div>
-      <nav class="footer__nav" aria-label="Navegación del pie"><h3>Navegación</h3><ul>${navLinks}</ul></nav>
-      <nav class="footer__nav" aria-label="Categorías"><h3>Categorías</h3><ul>${categoryLinks}</ul></nav>
+      <nav class="footer__nav" aria-label="Explorar"><h3>Explorar</h3><ul>${navLinks}${categoryLinks}</ul></nav>
       <div class="footer__contact"><h3>Contacto</h3><ul>${contact.join("")}</ul></div>
     </div>
     <div class="footer__bottom"><div class="container footer__bottom-inner">
