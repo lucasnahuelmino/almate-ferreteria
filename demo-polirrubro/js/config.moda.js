@@ -33,10 +33,10 @@ const MODA_CONFIG = {
   },
 
   contact: {
-    whatsapp: "5491128687130",
+    whatsapp: "5491134761743",
     instagram: "",
     email: "",
-    address: "Av. Tomás Flores 1691, Quilmes",
+    address: "",
     hours: "",
   },
 
