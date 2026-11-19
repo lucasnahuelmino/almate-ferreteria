@@ -1,0 +1,35 @@
+/* ==========================================================================
+   ALMATE Assistant Core — widget flotante (autocontenido)
+   ========================================================================== */
+.almate-assistant { position: fixed; right: 1rem; bottom: 1rem; z-index: 120; font-family: var(--font-body, system-ui, sans-serif); }
+.almate-assistant__toggle {
+  width: 56px; height: 56px; border-radius: 50%; border: 2.5px solid var(--ink, #1c1b22);
+  background: var(--sun, #fbbf24); color: var(--ink, #1c1b22); font-size: 24px; cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink, #1c1b22); display: flex; align-items: center; justify-content: center;
+}
+.almate-assistant__panel {
+  position: absolute; right: 0; bottom: 70px; width: 340px; max-width: calc(100vw - 2rem);
+  max-height: 70vh; background: var(--paper, #fff7ee); border: 2.5px solid var(--ink, #1c1b22);
+  border-radius: 18px; box-shadow: 6px 6px 0 var(--ink, #1c1b22); display: flex; flex-direction: column; overflow: hidden;
+}
+.almate-assistant__panel[hidden] { display: none; }
+.almate-assistant__head { padding: .8rem 1rem; background: var(--ink, #1c1b22); color: var(--paper, #fff7ee); font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+.almate-assistant__head button { background: transparent; border: 0; color: inherit; font-size: 18px; cursor: pointer; }
+.almate-assistant__messages { flex: 1; overflow-y: auto; padding: .8rem; display: flex; flex-direction: column; gap: .6rem; }
+.almate-assistant__msg { padding: .6rem .8rem; border-radius: 12px; max-width: 90%; line-height: 1.4; font-size: .92rem; }
+.almate-assistant__msg--bot { background: #fff; border: 2px solid var(--ink, #1c1b22); align-self: flex-start; }
+.almate-assistant__msg--user { background: var(--sky, #3b82f6); color: #fff; align-self: flex-end; }
+.almate-assistant__msg--bot a { color: var(--ink, #1c1b22); font-weight: 700; }
+.almate-assistant__quick { display: flex; flex-wrap: wrap; gap: .4rem; padding: .6rem; border-top: 2px solid var(--ink, #1c1b22); background: var(--paper, #fff7ee); }
+.almate-assistant__quick button { font-size: .78rem; padding: .35rem .7rem; border: 2px solid var(--ink, #1c1b22); border-radius: 999px; background: #fff; cursor: pointer; font-weight: 700; }
+.almate-assistant__input { display: flex; gap: .4rem; padding: .6rem; border-top: 2px solid var(--ink, #1c1b22); }
+.almate-assistant__input input { flex: 1; padding: .5rem .7rem; border: 2px solid var(--ink, #1c1b22); border-radius: 999px; font-size: .9rem; }
+.almate-assistant__input button { padding: .5rem .9rem; border: 2px solid var(--ink, #1c1b22); border-radius: 999px; background: var(--ink, #1c1b22); color: var(--paper, #fff7ee); font-weight: 800; cursor: pointer; }
+.almate-assistant__products { display: flex; flex-direction: column; gap: .4rem; margin-top: .4rem; }
+.almate-assistant__product { display: flex; gap: .5rem; align-items: center; padding: .4rem; background: #fff; border: 2px solid var(--ink, #1c1b22); border-radius: 10px; text-decoration: none; color: inherit; }
+.almate-assistant__product img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; }
+.almate-assistant__product strong { font-size: .85rem; }
+.almate-assistant__product span { font-size: .78rem; color: var(--grey, #5f5a7a); }
+@media (max-width: 480px) {
+  .almate-assistant__panel { width: calc(100vw - 2rem); }
+}

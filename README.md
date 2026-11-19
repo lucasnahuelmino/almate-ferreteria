@@ -19,6 +19,7 @@ modelo-a/            → Industrial: presentación, rubros y catálogo de consul
 modelo-b/            → Premium: marca y experiencia editorial
 modelo-c/            → Conversión: propuesta, dudas y captación de consultas
 modelo-d/            → Catálogo Comercial: vidriera con búsqueda y lista
+demo-polirrubro/  → Demo Polirrubro: tienda variada con catálogo real importado
 ```
 
 Cada modelo tiene su `README.md` con la guía de personalización. La

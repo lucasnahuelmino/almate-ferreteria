@@ -131,3 +131,15 @@ Cobertura del test de A (50): carga y SEO estático · logo idéntico en header/
 
 ## Próximo paso recomendado
 Revisar en el navegador real (Chrome + Safari/iOS), correr Lighthouse y adaptar un primer cliente real de punta a punta con el checklist de `modelo-a/README.md` / `modelo-b/README.md`. Cuando esté listo, versionar el working tree en un commit local (hoy no hay ningún commit nuevo).
+
+---
+
+## Demo Polirrubro (ALMATE) — 2026-11-19
+
+- Nueva plantilla en `demo-polirrubro/`, basada en la arquitectura de Demo Moda 2 (PIOLA) con identidad propia.
+- Catálogo real importado de https://elimportador.ar/catalogo2024.php (credencial AKMI, no publicada): 821 productos únicos, 21 categorías, 1103 imágenes descargadas en `assets/products/`.
+- Sin variantes reales en origen: cada artículo se modela con un único color/talle "Único"; sin descripciones ni stock (no inventados).
+- Funcionalidades: búsqueda por nombre/código, filtros por categoría y precio, orden, ficha de producto, lista de consulta, WhatsApp, categorías visuales, beneficios, FAQ, asistente ALMATE.
+- ALMATE Assistant Core integrado (`almate-assistant.js/css/config.js`).
+- Pruebas: core 19/19, browser 18/18, sync-seo OK, node --check OK.
+- Pendientes: reemplazar imágenes por fotos propias con derechos; validar en dispositivos físicos; revisar textos de contacto reales.
