@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+  <link rel="icon" type="image/svg+xml" href="assets/logo/favicon.svg">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- ALMATE:MODA:SEO:START -->
+  <title>Pichones · Ropa piola para chicos</title>
+  <meta name="description" content="Ropa infantil cómoda y con onda para los más chicos. Mirá la mini tanda Verano 27, armá el pedido y mandalo por WhatsApp.">
+  <meta name="theme-color" content="#403a52">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pichones · Ropa piola para chicos">
+  <meta property="og:description" content="Ropa infantil cómoda y con onda para los más chicos. Mirá la mini tanda Verano 27, armá el pedido y mandalo por WhatsApp.">
+  <meta property="og:site_name" content="Pichones">
+  <meta property="og:locale" content="es_AR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Pichones · Ropa piola para chicos">
+  <meta name="twitter:description" content="Ropa infantil cómoda y con onda para los más chicos. Mirá la mini tanda Verano 27, armá el pedido y mandalo por WhatsApp.">
+  <script type="application/ld+json" id="ld-json">{"@context":"https://schema.org","@type":"ClothingStore","name":"Pichones","description":"Ropa cómoda y con onda para los más chicos. Elegís, armás el pedido y lo mandás por WhatsApp.","email":"hola@pichones.demo","address":{"@type":"PostalAddress","streetAddress":"Local de ejemplo · Buenos Aires"},"sameAs":["https://instagram.com/pichones.demo"]}</script>
+  <!-- ALMATE:MODA:SEO:END -->
+
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- Cinta en movimiento (la completa el motor desde config.moda.js) -->
+  <div class="marquee" id="announcement" role="region" aria-label="Novedades" hidden></div>
+
+  <header class="site-header" id="site-header">
+    <div class="container header__inner">
+      <a class="brand" id="brand-link" href="#inicio" aria-label="Pichones, inicio">
+        <img class="brand__mark" id="brand-mark" src="assets/logo/mark.svg" alt="" width="40" height="40">
+        <span class="brand__word" id="brand-wordmark">pichones</span>
+        <img class="brand__logo" id="brand-logo" alt="" hidden>
+      </a>
+
+      <nav class="site-nav" id="site-nav" aria-label="Navegación principal">
+        <ul class="nav__list" id="nav-list"></ul>
+        <div class="mobile-search">
+          <label class="visually-hidden" for="mobile-search-input">Buscar prendas</label>
+          <input id="mobile-search-input" type="search" placeholder="Buscá tu prenda…" autocomplete="off">
+        </div>
+      </nav>
+
+      <div class="header__actions">
+        <form class="header__search" id="header-search-form" role="search" aria-label="Buscar prendas">
+          <label class="visually-hidden" for="header-search">Buscar prendas</label>
+          <input id="header-search" type="search" placeholder="Buscar…" autocomplete="off">
+        </form>
+        <button class="cart-btn" id="cart-open" type="button" aria-label="Abrir mi pedido">
+          <svg class="cart-btn__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M9 10V7a3 3 0 0 1 6 0v3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span class="cart-btn__label">Mi pedido</span>
+          <span class="header__cart-count" id="cart-count" hidden>0</span>
+        </button>
+        <button class="menu-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <noscript><p class="container">Para ver la tienda necesitás activar JavaScript.</p></noscript>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <!-- CARRITO DE CONSULTA -->
+  <div class="cart-overlay" id="cart-overlay" hidden></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Mi pedido" aria-modal="true" hidden>
+    <header class="cart-drawer__head">
+      <h2>Mi pedido</h2>
+      <button id="cart-close" type="button">Cerrar</button>
+    </header>
+    <div class="cart-drawer__body">
+      <p class="cart-drawer__empty" id="cart-empty">Todavía no sumaste nada. ¡Dale, mirá la tanda!</p>
+      <div class="cart-items" id="cart-items"></div>
+    </div>
+    <footer class="cart-drawer__foot">
+      <div class="cart-drawer__total"><span>Total estimado</span><strong id="cart-total"></strong></div>
+      <p class="cart-drawer__note">Los importes son estimados. Te confirmamos disponibilidad y condiciones por WhatsApp.</p>
+      <a class="btn btn--primary" id="cart-whatsapp" target="_blank" rel="noopener noreferrer">Mandar pedido por WhatsApp</a>
+      <button class="cart-drawer__clear" id="cart-clear" type="button" disabled>Vaciar pedido</button>
+    </footer>
+  </aside>
+
+  <!-- DETALLE DEL PRODUCTO -->
+  <dialog class="modal" id="product-modal" aria-label="Detalle de producto">
+    <button class="modal__close" id="pd-close" type="button" aria-label="Cerrar">×</button>
+    <div class="modal__media"><img id="pd-image" alt=""></div>
+    <div class="modal__body">
+      <p class="modal__step" id="pd-step" hidden></p>
+      <span class="modal__category" id="pd-category"></span>
+      <h3 class="modal__name" id="pd-name"></h3>
+      <p class="modal__description" id="pd-description"></p>
+      <div class="modal__prices"><strong id="pd-price"></strong><s id="pd-old" hidden></s></div>
+      <fieldset class="modal__field"><legend>Color</legend><div class="options" id="pd-colors"></div></fieldset>
+      <fieldset class="modal__field"><legend>Talle</legend><div class="options options--sizes" id="pd-sizes"></div></fieldset>
+      <p class="modal__availability" id="pd-availability" aria-live="polite"></p>
+      <div class="modal__qty">
+        <span>Cantidad</span>
+        <button id="pd-qty-minus" type="button" aria-label="Restar una unidad">−</button>
+        <span id="pd-qty">1</span>
+        <button id="pd-qty-plus" type="button" aria-label="Sumar una unidad">+</button>
+      </div>
+      <button class="btn btn--primary modal__add" id="pd-add" type="button">Sumar a mi pedido</button>
+      <p class="modal__error" id="pd-error" role="alert" hidden></p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/config.moda.js"></script>
+  <script src="js/config-core.moda.js"></script>
+  <script src="js/products.moda.js"></script>
+  <script src="js/whatsapp.moda.js"></script>
+  <script src="js/cart.moda.js"></script>
+  <script src="js/catalog.moda.js"></script>
+  <script src="js/product-detail.moda.js"></script>
+  <script src="js/pilcha.moda.js"></script>
+  <script src="js/engine.moda.js"></script>
+</body>
+</html>

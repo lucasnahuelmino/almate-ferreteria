@@ -1,0 +1,99 @@
+/* ==========================================================================
+   ALMATE · Demo Moda 3 (PICHONES) · responsive.css
+   Ajustes por ancho de pantalla.
+   ========================================================================== */
+
+/* Panel de filtros: en escritorio se muestra como panel desplegable bajo la
+   barra (sin respaldo); en móvil se convierte en hoja inferior. */
+@media (max-width: 719px) {
+  .catalog__filters {
+    display: grid; grid-template-columns: 1fr; position: fixed; left: 0; right: 0; bottom: 0;
+    z-index: 95; max-height: 84dvh; overflow-y: auto; margin: 0; padding: 1.4rem;
+    border-radius: var(--radius) var(--radius) 0 0; border-width: var(--bw) 0 0; box-shadow: none;
+    transform: translateY(105%); visibility: hidden; transition: transform .3s var(--ease), visibility 0s linear .3s;
+  }
+  .catalog__filters.is-open { transform: none; visibility: visible; transition-delay: 0s; }
+  .filters-backdrop { display: none; }
+  .filters-backdrop.is-open { display: block; position: fixed; inset: 0; z-index: 94; background: rgba(64, 58, 82, .5); }
+}
+
+@media (max-width: 1024px) {
+  .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .catalog__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .perks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .footer__brand { grid-column: 1 / -1; }
+  .look--0 { grid-column: span 6; }
+  .look--1 { grid-column: span 6; margin-top: 0; }
+  .look--2 { grid-column: span 6; }
+  .look--3 { grid-column: span 6; margin-top: 0; }
+  .look--4 { grid-column: span 12; margin-top: 0; }
+}
+
+@media (max-width: 959px) {
+  .header__inner { grid-template-columns: 1fr auto; }
+  .site-nav {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 59;
+    display: none; max-height: calc(100dvh - 76px); overflow: auto;
+    padding: 1rem var(--gutter) 1.4rem;
+    background: var(--paper); border-bottom: var(--bw) solid var(--ink);
+  }
+  .is-menu-open .site-nav { display: block; }
+  .nav__list { flex-direction: column; align-items: stretch; gap: 0; }
+  .nav__list li { border-bottom: 1px solid rgba(64, 58, 82, .12); }
+  .nav__list a, .nav__list .nav-filter { padding: .9rem 0; font-size: 1.15rem; font-family: var(--font-display); font-weight: 700; }
+  .nav__list a::after, .nav__list .nav-filter::after { display: none; }
+  .mobile-search { display: block; margin-top: 1rem; }
+  .mobile-search input { width: 100%; padding: .7rem 1rem; border: var(--bw) solid rgba(64, 58, 82, .2); border-radius: var(--radius-pill); background: #fff; font-size: .95rem; }
+  .header__search { display: none; }
+  .cart-btn__label { display: none; }
+  .menu-btn { display: block; }
+
+  .hero__grid { grid-template-columns: minmax(0, 1fr); }
+  .hero__art { order: -1; max-width: 460px; }
+  .hero__badge { bottom: -26px; width: 100px; height: 100px; }
+
+  .pilcha__root { grid-template-columns: minmax(0, 1fr); }
+  .drop__wrap { grid-template-columns: minmax(0, 1fr); }
+  .drop__cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about__grid { grid-template-columns: minmax(0, 1fr); }
+  .faq__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 719px) {
+  .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+  .perks { grid-template-columns: minmax(0, 1fr); }
+  .lookbook__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .look--0, .look--1, .look--2, .look--3, .look--4 { grid-column: span 1; margin-top: 0; }
+  .footer__bottom-inner { flex-direction: column; align-items: flex-start; gap: .4rem; }
+}
+
+@media (max-width: 520px) {
+  .catalog__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+  .drop__cards { grid-template-columns: minmax(0, 1fr); }
+  .drop-card--0, .drop-card--2 { margin-top: 0; }
+  .guia__table { font-size: .88rem; }
+  .guia__table th, .guia__table td { padding: .7rem .8rem; }
+}
+
+@media (max-width: 380px) {
+  .catalog__grid { grid-template-columns: minmax(0, 1fr); }
+  .cat-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* En pantallas táctiles, la acción de la tarjeta siempre es visible. */
+@media (hover: none) {
+  .scard__cta { opacity: 1; }
+}
+
+/* Accesibilidad: respetar preferencias de movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .marquee__group[aria-hidden="true"] { display: none; }
+  .reveal { opacity: 1; transform: none; }
+}

@@ -1,0 +1,157 @@
+/* ==========================================================================
+   ALMATE · Demo Moda 3 (PICHONES) · components.css
+   Botones, chips, tarjeta de producto, carrito, ficha modal y toast.
+   ========================================================================== */
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 46px; padding: .7rem 1.3rem;
+  border: var(--bw) solid var(--ink); border-radius: var(--radius-pill);
+  font-weight: 700; font-size: .92rem; text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition: transform .16s var(--ease), box-shadow .16s var(--ease), background .16s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.btn--primary { background: var(--sun); color: var(--ink); }
+.btn--primary:hover { background: var(--paper); }
+.btn--ghost { background: #fff; }
+.btn--ghost:hover { background: var(--paper); }
+.btn--small { min-height: 38px; padding: .5rem 1rem; font-size: .84rem; }
+.btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* ---------- Chips y muestras de color ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .5rem .9rem; border: var(--bw) solid rgba(64, 58, 82, .22); border-radius: var(--radius-pill);
+  background: #fff; font-weight: 600; font-size: .88rem;
+  transition: border-color .15s ease, background .15s ease;
+}
+.chip:hover { border-color: var(--ink); }
+.chip.is-active, .chip--active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.chip--active { padding-right: .7rem; }
+.swatch { display: inline-block; width: 13px; height: 13px; border-radius: 50%; border: var(--bw) solid rgba(64, 58, 82, .28); flex: 0 0 auto; }
+.swatch--inline { width: 11px; height: 11px; }
+.swatch--large { width: 20px; height: 20px; }
+
+/* ---------- Tarjeta de producto (scard) ---------- */
+.scard {
+  border: var(--bw) solid var(--ink); border-radius: var(--radius);
+  background: #fff; overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.scard:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+.scard__open { display: block; width: 100%; border: 0; padding: 0; background: none; text-align: left; }
+.scard__media { position: relative; display: block; aspect-ratio: 4 / 5; background: var(--tone, var(--sun)); overflow: hidden; }
+.scard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease); }
+.scard:hover .scard__media img { transform: scale(1.045); }
+.scard__tag {
+  position: absolute; top: .7rem; left: .7rem;
+  padding: .32rem .7rem; border-radius: var(--radius-pill); border: var(--bw) solid var(--ink);
+  font-weight: 800; font-size: .74rem; box-shadow: var(--shadow-sm);
+}
+.scard__tag--sale { background: var(--pink); }
+.scard__tag--limited { background: var(--lilac); }
+.scard__tag--exclusive { background: var(--lime); }
+.scard__tag--best-seller { background: var(--sun); }
+.scard__tag--new { background: var(--sky); }
+.scard__info { display: block; padding: .9rem 1rem 1rem; }
+.scard__cat { display: block; color: var(--grey); font-size: .78rem; font-weight: 600; letter-spacing: .02em; }
+.scard__name { display: block; margin-top: .2rem; font-weight: 700; font-size: 1.05rem; }
+.scard__row { display: flex; align-items: baseline; gap: .5rem; margin-top: .35rem; }
+.scard__price { font-weight: 800; font-size: 1.02rem; }
+.scard__old { color: var(--grey); font-size: .88rem; }
+.scard__colors { display: flex; align-items: center; gap: .35rem; margin-top: .6rem; }
+.scard__more { color: var(--grey); font-size: .8rem; }
+.scard__cta {
+  display: inline-flex; align-items: center; gap: .35rem;
+  margin: .7rem 0 0; padding: .45rem .9rem; border-radius: var(--radius-pill);
+  background: var(--ink); color: var(--paper); font-weight: 700; font-size: .84rem;
+}
+
+/* ---------- Carrito ---------- */
+.cart-overlay { position: fixed; inset: 0; z-index: 80; background: rgba(64, 58, 82, .4); backdrop-filter: blur(2px); opacity: 0; transition: opacity .3s ease; }
+.cart-overlay.is-open { opacity: 1; }
+.cart-drawer {
+  position: fixed; top: 0; right: 0; z-index: 90; display: flex; flex-direction: column;
+  width: min(440px, 94vw); height: 100dvh; background: var(--paper);
+  border-left: var(--bw) solid var(--ink); box-shadow: -20px 0 50px -30px rgba(64, 58, 82, .6);
+  transform: translateX(105%); transition: transform .3s var(--ease);
+}
+.cart-drawer.is-open { transform: none; }
+.cart-drawer__head { display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.3rem; border-bottom: 1px solid rgba(64, 58, 82, .12); }
+.cart-drawer__head h2 { font-size: 1.4rem; }
+.cart-drawer__head button { border: 0; background: none; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.cart-drawer__body { flex: 1; overflow-y: auto; padding: 1rem 1.3rem; }
+.cart-drawer__empty { color: var(--grey); padding: 2rem 0; text-align: center; }
+.cart-item { display: grid; grid-template-columns: 64px 1fr auto; gap: .9rem; align-items: start; padding: 1rem 0; border-bottom: 1px solid rgba(64, 58, 82, .12); }
+.cart-item__thumb { width: 64px; height: 80px; border-radius: var(--radius-sm); overflow: hidden; background: var(--tone, var(--sun)); border: var(--bw) solid var(--ink); }
+.cart-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cart-item__name { font-weight: 700; font-size: 1rem; }
+.cart-item__variant { display: flex; align-items: center; gap: .4rem; margin-top: .3rem; color: var(--grey); font-size: .84rem; }
+.cart-item__price { margin-top: .25rem; font-weight: 700; }
+.cart-item__qty { display: inline-flex; align-items: center; gap: .5rem; margin-top: .4rem; border: var(--bw) solid var(--ink); border-radius: var(--radius-pill); padding: .2rem; }
+.cart-item__qty button { width: 28px; height: 28px; border: 0; background: none; font-size: 1.1rem; }
+.cart-item__qty span { min-width: 18px; text-align: center; font-weight: 700; }
+.cart-item__remove { align-self: start; border: 0; background: none; color: var(--grey); font-size: 1.3rem; line-height: 1; }
+.cart-drawer__foot { padding: 1.1rem 1.3rem; border-top: 1px solid rgba(64, 58, 82, .12); display: grid; gap: .8rem; }
+.cart-drawer__total { display: flex; align-items: baseline; justify-content: space-between; font-weight: 700; }
+.cart-drawer__total strong { font-size: 1.3rem; }
+.cart-drawer__note { color: var(--grey); font-size: .82rem; }
+.cart-drawer__foot .btn { width: 100%; }
+.cart-drawer__clear { width: 100%; border: 0; background: none; color: var(--grey); text-decoration: underline; text-underline-offset: 3px; }
+.cart-drawer__clear:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ---------- Ficha modal ---------- */
+.modal {
+  width: min(880px, 94vw); max-height: 92vh; margin: auto; padding: 0;
+  border: var(--bw) solid var(--ink); border-radius: var(--radius); background: var(--paper);
+  overflow: auto; box-shadow: var(--shadow-lg);
+}
+.modal::backdrop { background: rgba(64, 58, 82, .55); backdrop-filter: blur(4px); }
+.modal__close {
+  position: absolute; top: .9rem; right: .9rem; z-index: 2; width: 40px; height: 40px;
+  border: var(--bw) solid var(--ink); border-radius: 50%; background: #fff; font-size: 1.3rem; line-height: 1;
+}
+.modal__media { aspect-ratio: 4 / 3; background: var(--tone, var(--sun)); }
+.modal__media img { width: 100%; height: 100%; object-fit: cover; }
+.modal__body { padding: clamp(1.2rem, 3vw, 2rem); }
+.modal__step { display: inline-block; padding: .3rem .7rem; border-radius: var(--radius-pill); background: var(--lilac); border: var(--bw) solid var(--ink); font-weight: 700; font-size: .8rem; margin-bottom: .6rem; }
+.modal__category { color: var(--grey); font-weight: 700; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+.modal__name { font-size: 1.7rem; margin-top: .4rem; }
+.modal__description { margin-top: .7rem; color: var(--grey); }
+.modal__prices { display: flex; align-items: baseline; gap: .6rem; margin-top: .9rem; }
+.modal__prices strong { font-size: 1.3rem; }
+.modal__prices s { color: var(--grey); }
+.modal__field { margin-top: 1.2rem; border: 0; padding: 0; }
+.modal__field legend { margin-bottom: .5rem; color: var(--grey); font-weight: 700; font-size: .84rem; }
+.options { display: flex; flex-wrap: wrap; gap: .5rem; }
+.option {
+  display: inline-flex; align-items: center; justify-content: center; gap: .45rem; min-width: 44px; min-height: 44px; padding: .5rem .85rem;
+  border: var(--bw) solid rgba(64, 58, 82, .22); border-radius: var(--radius-pill); background: #fff;
+  font-weight: 600; font-size: .88rem; transition: border-color .15s ease;
+}
+.option:hover:not(.is-disabled) { border-color: var(--ink); }
+.option.is-selected { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.option.is-disabled { opacity: .4; cursor: not-allowed; text-decoration: line-through; }
+.option__label { font-size: .82rem; }
+.modal__availability { margin-top: 1rem; color: var(--grey); font-size: .88rem; }
+.modal__qty { display: flex; align-items: center; gap: .75rem; margin-top: 1.2rem; }
+.modal__qty > span:first-child { color: var(--grey); font-weight: 600; }
+.modal__qty button { width: 32px; height: 32px; border: var(--bw) solid var(--ink); border-radius: 50%; background: #fff; }
+.modal__add { width: 100%; margin-top: 1.2rem; }
+.modal__error { margin-top: .8rem; color: #a33b3b; font-weight: 600; }
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 1.5rem; z-index: 200; translate: -50% 0;
+  padding: .8rem 1.2rem; border-radius: var(--radius-pill); border: var(--bw) solid var(--ink);
+  background: var(--ink); color: var(--paper); font-weight: 700; box-shadow: var(--shadow);
+  opacity: 0; transform: translateY(12px); transition: opacity .2s ease, transform .2s ease;
+}
+.toast.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Aparición progresiva ---------- */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .55s ease, transform .55s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }

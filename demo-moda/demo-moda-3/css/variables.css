@@ -1,0 +1,103 @@
+/* ==========================================================================
+   ALMATE · Demo Moda 3 (PICHONES) · variables.css
+   Tokens de diseño, reset y base tipográfica. Los colores y fuentes se
+   sobrescriben desde config.moda.js (engine.moda.js → applyTheme).
+
+   Identidad: "crayón nube" — formas redondeadas, sombras suaves y acentos
+   de color, pensada para ropa infantil.
+   ========================================================================== */
+:root {
+  --ink: #403a52;
+  --paper: #fbf4e8;
+  --sky: #8ecbf5;
+  --sun: #ffd166;
+  --pink: #ff9eb5;
+  --lime: #b7e08a;
+  --lilac: #c7b6f5;
+  --grey: #6f6a80;
+
+  --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "DM Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --max: 1240px;
+  --radius: 26px;
+  --radius-sm: 16px;
+  --radius-pill: 999px;
+  --bw: 1.6px;                            /* contorno fino */
+  --shadow-sm: 0 5px 16px -8px rgba(64, 58, 82, .42);
+  --shadow: 0 10px 0 -8px rgba(64, 58, 82, .12), 0 24px 48px -28px rgba(64, 58, 82, .5);
+  --shadow-lg: 0 18px 0 -12px rgba(64, 58, 82, .12), 0 34px 64px -32px rgba(64, 58, 82, .55);
+  --dash: 2px dashed rgba(64, 58, 82, .35);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(64, 58, 82, .07) 1.1px, transparent 1.2px);
+  background-size: 26px 26px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body.no-scroll { overflow: hidden; }
+
+img, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4, p { margin-top: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 8px; }
+.site-footer :focus-visible, .marquee :focus-visible { outline-color: var(--sun); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 200;
+  background: var(--ink); color: var(--paper); padding: .7rem 1.2rem; border-radius: 999px; font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.skip-link:focus { top: 1rem; }
+
+.container { width: min(100% - var(--gutter) * 2, var(--max)); margin-inline: auto; }
+
+h1, h2, h3, .section-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: 1.04;
+}
+
+/* Título con resaltado (palabra marcada). */
+mark {
+  background: none;
+  color: var(--ink);
+  position: relative;
+  white-space: nowrap;
+}
+mark::after {
+  content: "";
+  position: absolute;
+  left: -.06em;
+  right: -.06em;
+  bottom: .06em;
+  height: .42em;
+  background: var(--sun);
+  border-radius: .3em;
+  z-index: -1;
+  transform: rotate(-1.5deg);
+}
