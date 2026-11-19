@@ -1,0 +1,76 @@
+/* ==========================================================================
+   ALMATE · Demo Moda 2 (PIOLA) · variables.css
+   Tokens de diseño, reset y base tipográfica. Los colores y fuentes se
+   sobrescriben desde config.moda.js (engine.moda.js → applyTheme).
+   ========================================================================== */
+:root {
+  --ink: #15131f;
+  --paper: #fff6e5;
+  --sky: #74acdf;
+  --sun: #ffc531;
+  --pink: #ff8fb8;
+  --lime: #c8f560;
+  --lilac: #b8a1ff;
+  --grey: #5b5870;
+
+  --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "DM Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --max: 1240px;
+  --radius: 24px;
+  --radius-sm: 14px;
+  --bw: 2.5px;                       /* grosor de contorno */
+  --shadow: 5px 5px 0 var(--ink);    /* sombra dura estilo sticker */
+  --shadow-lg: 8px 8px 0 var(--ink);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 96px; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(21, 19, 31, .09) 1.2px, transparent 1.3px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body.no-scroll { overflow: hidden; }
+
+img, svg { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4, p { margin-top: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.site-footer :focus-visible, .marquee :focus-visible { outline-color: var(--sun); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 200;
+  background: var(--ink); color: var(--paper); padding: .7rem 1.1rem; border-radius: 999px; font-weight: 700;
+}
+.skip-link:focus { top: 1rem; }
+
+.container { width: min(100% - var(--gutter) * 2, var(--max)); margin-inline: auto; }
+
+h1, h2, h3, .section-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.02;
+}

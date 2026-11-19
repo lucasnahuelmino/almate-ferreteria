@@ -1,0 +1,93 @@
+/* ==========================================================================
+   ALMATE · Demo Moda 2 (PIOLA) · responsive.css
+   Ajustes por ancho (1180 / 1040 / 900 / 720 / 480 / 340 px) y preferencia
+   de movimiento reducido.
+   ========================================================================== */
+.cart-item__body { grid-column: 2 / 4; }
+
+@media (max-width: 1180px) {
+  .header__search { display: none; }
+  .catalog__grid { grid-template-columns: repeat(3, 1fr); }
+  .footer__grid { grid-template-columns: 1.4fr 1fr 1fr; }
+  .footer__contact { grid-column: 1 / -1; }
+}
+
+/* Menú hamburguesa */
+@media (max-width: 1040px) {
+  .menu-btn { display: block; }
+  .site-nav { display: none; position: absolute; left: 0; right: 0; top: 100%; order: 0; max-height: calc(100dvh - 72px); overflow: auto; padding: 1.2rem var(--gutter) 1.6rem; background: var(--paper); border-bottom: 3px solid var(--ink); }
+  .is-menu-open .site-nav { display: block; animation: modal-in .3s var(--ease); }
+  .nav__list { flex-wrap: wrap; gap: .6rem; }
+  .nav__list a, .nav-filter { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; padding: .55rem 1.2rem; background: #fff; border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+  .nav__list li:nth-child(5n + 1) > * { background: var(--sun); }
+  .nav__list li:nth-child(5n + 2) > * { background: var(--pink); }
+  .nav__list li:nth-child(5n + 3) > * { background: var(--sky); }
+  .nav__list li:nth-child(5n + 4) > * { background: var(--lime); }
+  .nav__list li:nth-child(5n) > * { background: var(--lilac); }
+  .mobile-search { display: block; margin-top: 1.2rem; }
+  .mobile-search input { width: 100%; border: var(--bw) solid var(--ink); border-radius: 999px; background: #fff; padding: .8rem 1.1rem; }
+  .hero__title { font-size: clamp(2.8rem, 8.5vw, 5rem); }
+}
+
+@media (max-width: 900px) {
+  .hero__grid, .drop__wrap, .pilcha__root, .about__grid, .faq__grid { grid-template-columns: 1fr; }
+  .hero__art { max-width: 560px; margin-inline: auto; width: 100%; }
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+  .catalog__grid { grid-template-columns: repeat(2, 1fr); }
+  .perks { grid-template-columns: repeat(2, 1fr); }
+  .about__media { max-width: 460px; }
+  .drop__cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 1.4rem .4rem 1.6rem; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scrollbar-width: thin; }
+  .drop-card { flex: 0 0 min(58%, 240px); scroll-snap-align: center; }
+  .drop-card--1, .drop-card--3 { transform: rotate(3deg); }
+  .lookbook__grid { grid-template-columns: repeat(2, 1fr); }
+  .look--0, .look--1, .look--3 { grid-column: auto; grid-row: auto; margin-top: 0; }
+  .look--2, .look--4 { grid-column: 1 / -1; grid-row: auto; }
+}
+
+/* Filtros como hoja inferior + ficha en una columna */
+@media (max-width: 719px) {
+  .catalog__filters { display: grid; grid-template-columns: 1fr; position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; max-height: 84dvh; overflow-y: auto; margin: 0; border-radius: 28px 28px 0 0; border-width: 3px 0 0; box-shadow: none; transform: translateY(105%); visibility: hidden; transition: transform .35s var(--ease), visibility 0s linear .35s; }
+  .catalog__filters.is-open { transform: none; visibility: visible; transition-delay: 0s; }
+  .filters-backdrop.is-open { display: block; position: fixed; inset: 0; z-index: 94; background: rgba(21, 19, 31, .6); }
+  .modal[open] { grid-template-columns: 1fr; }
+  .modal__media { border-right: 0; border-bottom: 3px solid var(--ink); min-height: 0; padding: 1rem; }
+  .modal__media img { max-height: 34vh; }
+  .modal__body { padding: 1.2rem 1.2rem 1.5rem; }
+  .pilcha__row { grid-template-columns: 1fr; gap: .4rem; }
+  .pilcha__count { display: none; }
+  .pilcha__slot { text-align: center; }
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+  .footer__brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) {
+  .header__inner { min-height: 64px; gap: .6rem; }
+  .brand__word { font-size: 1.6rem; }
+  .brand__mark { width: 34px; height: 34px; }
+  .cart-btn { padding: .5rem .8rem; }
+  .cart-btn__label { display: none; }
+  .hero__subtitle { font-size: 1.02rem; }
+  .hero__cta .btn { flex: 1 1 100%; }
+  .cat-tile { min-height: 190px; padding: 1rem; }
+  .cat-tile__go { width: 2rem; height: 2rem; top: .7rem; right: .7rem; }
+  .scard__info { padding: .6rem .65rem .8rem; }
+  .scard__name { font-size: 1.02rem; }
+  .perks { grid-template-columns: 1fr; }
+  .perk:nth-child(even) { transform: rotate(1.2deg); }
+  .cart-item { grid-template-columns: 64px 1fr auto; }
+}
+
+@media (max-width: 340px) {
+  .catalog__grid, .cat-grid { grid-template-columns: 1fr; }
+}
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  .marquee__track { width: auto; justify-content: center; }
+  .marquee__group[aria-hidden="true"], .marquee__group li.is-dup { display: none; }
+  .marquee__group { flex-wrap: wrap; justify-content: center; }
+  .hero__badge-ring, .drop::before { animation: none; }
+  .reveal { opacity: 1; translate: none; }
+}
