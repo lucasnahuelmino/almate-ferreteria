@@ -40,7 +40,6 @@
     renderFooter();
     initNavigation();
     initMenu();
-    initSearch();
     initHeaderState();
     initToast();
 
@@ -505,22 +504,6 @@
 
   function closeMenu() {
     if (window.__closeMenu) window.__closeMenu();
-  }
-
-  function initSearch() {
-    const apply = (value) => {
-      if (window.__moda && window.__moda.catalog) window.__moda.catalog.searchAll(value);
-      const section = $("#catalogo");
-      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
-    };
-    const desktop = $("#header-search");
-    const form = $("#header-search-form");
-    const mobile = $("#mobile-search-input");
-    if (desktop) {
-      desktop.addEventListener("input", () => apply(desktop.value.trim()));
-      if (form) form.addEventListener("submit", (event) => { event.preventDefault(); apply(desktop.value.trim()); });
-    }
-    if (mobile) mobile.addEventListener("input", () => apply(mobile.value.trim()));
   }
 
   function initHeaderState() {

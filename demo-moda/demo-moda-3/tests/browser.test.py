@@ -181,8 +181,7 @@ try:
         page.click('#nav-list a:has-text("Armá el conjunto")')
         page.wait_for_timeout(500)
         check("enlace de ancla lleva a los conjuntos", page.evaluate("document.getElementById('pilcha').getBoundingClientRect().top < window.innerHeight"))
-        page.fill("#header-search", "vestido")
-        check("búsqueda del header filtra el catálogo", names(page) == ["Vestido de Verano"], names(page))
+        check("hay un único buscador (en el catálogo)", count(page, "input[type='search']") == 1)
         ctx.close()
 
         print("\n[5] Ficha, variantes y carrito")
