@@ -9,12 +9,10 @@
     @font-face { font-family: "DM Sans"; src: url("../demo-polirrubro/assets/fonts/dm-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
     @font-face { font-family: "DM Sans"; src: url("../demo-polirrubro/assets/fonts/dm-sans-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
     .slide.v4 { background: var(--paper); background-image: radial-gradient(rgba(28,27,34,.08) 1.5px, transparent 1.6px); background-size: 24px 24px; }
-    .slide.v4 .inner { position: relative; }
+    .slide.v4 .inner { align-items: center; text-align: center; justify-content: center; }
     .slide.v4 .t-title { font-size: 104px; }
     .slide.v4 .frame { border-width: 5px; box-shadow: 8px 8px 0 var(--ink); }
     .slide.v4 .price-pill { background: var(--pink); }
-    .slide.v4 .sticker-a { position: absolute; top: 60px; right: 60px; transform: rotate(8deg); }
-    .slide.v4 .sticker-b { position: absolute; bottom: 180px; left: 60px; transform: rotate(-6deg); }
   </style>
 </head>
 <body>
@@ -22,7 +20,7 @@
   <article class="slide v4" id="oferta-v4-feed">
     <div class="inner">
       <div class="head-row">
-        <div class="logo-plate"><img src="../img/logo_local.png" alt="ALMATE"></div>
+        <div class="logo-plate"><span style="font-family:var(--font-display); font-weight:900; font-size:20px; letter-spacing:0.12em; color:var(--ink);">ALMATE</span></div>
         <span class="t-label">Oferta</span>
       </div>
       <span class="sticker sticker--pink sticker-a">OFERTA</span>
@@ -41,10 +39,10 @@
   <article class="slide v4 fmt-sq" id="oferta-v4-sq">
     <div class="inner">
       <div class="head-row">
-        <div class="logo-plate"><img src="../img/logo_local.png" alt="ALMATE"></div>
+        <div class="logo-plate"><span style="font-family:var(--font-display); font-weight:900; font-size:20px; letter-spacing:0.12em; color:var(--ink);">ALMATE</span></div>
         <span class="t-label">Oferta</span>
       </div>
-      <span class="sticker sticker--pink" style="position:absolute; top:60px; right:60px; transform:rotate(8deg);">OFERTA</span>
+      <span class="sticker sticker--pink" >OFERTA</span>
       <h1 class="t-title" style="font-size:84px;">Nombre del producto</h1>
       <div class="frame" style="height: 260px; margin: 20px 0; transform:rotate(-1deg);">Tu foto aquí</div>
       <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:16px;">
@@ -58,10 +56,10 @@
   <article class="slide v4 fmt-story" id="oferta-v4-story">
     <div class="inner">
       <div class="head-row">
-        <div class="logo-plate"><img src="../img/logo_local.png" alt="ALMATE"></div>
+        <div class="logo-plate"><span style="font-family:var(--font-display); font-weight:900; font-size:20px; letter-spacing:0.12em; color:var(--ink);">ALMATE</span></div>
         <span class="t-label">Oferta</span>
       </div>
-      <span class="sticker sticker--pink" style="position:absolute; top:60px; right:60px; transform:rotate(8deg);">OFERTA</span>
+      <span class="sticker sticker--pink" >OFERTA</span>
       <h1 class="t-title">Nombre del producto</h1>
       <p class="t-sub">Aprovechá el precio especial.</p>
       <div class="frame" style="height: 480px; margin: 24px 0; transform:rotate(-1deg);">Tu foto de producto aquí</div>

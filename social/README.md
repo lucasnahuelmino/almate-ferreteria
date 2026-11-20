@@ -39,7 +39,7 @@ Vista previa con `--zoom: 0.36` en `.sheet`. Para exportar a tamaño real, `--zo
 
 ## Identidad
 
-Colores, tipografía y stickers salen de `social.css` (tokens del polirrubro). Logos referenciados desde `../img/logo_local.png` (archivo oficial, sin copias).
+Colores, tipografía y stickers salen de `social.css` (tokens del polirrubro). Logos resueltos con wordmark tipográfico "ALMATE" (sin usar logos de otros negocios).
 
 ## Reglas
 
