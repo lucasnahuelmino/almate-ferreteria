@@ -1,0 +1,244 @@
+/* ==========================================================================
+   ALMATE · Polirrubro — Sistema de redes sociales
+   Formatos: feed (1080×1350), cuadrado (1080×1080), historia (1080×1920).
+   Identidad: colores vibrantes, stickers, contornos duros, Bricolage + DM Sans.
+   ========================================================================== */
+
+:root {
+  --ink: #1c1b22;
+  --paper: #fff7ee;
+  --sky: #3b82f6;
+  --sun: #fbbf24;
+  --pink: #ff4d6d;
+  --lime: #a3e635;
+  --orange: #ff6b35;
+  --lilac: #a78bfa;
+  --grey: #5f5a7a;
+
+  --font-display: "Bricolage Grotesque", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "DM Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --bw: 4px;
+  --radius: 28px;
+  --radius-sm: 16px;
+  --shadow: 6px 6px 0 var(--ink);
+  --shadow-lg: 10px 10px 0 var(--ink);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+
+  --zoom: 0.36;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #1a1a1a; color: var(--ink); font-family: var(--font-body); }
+
+.sheet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px;
+  justify-content: center;
+}
+
+/* ---------- Formatos ---------- */
+.slide {
+  position: relative;
+  width: 1080px;
+  height: 1350px;
+  transform: scale(var(--zoom));
+  transform-origin: top left;
+  background: var(--paper);
+  overflow: hidden;
+  border: 1px solid #333;
+  flex-shrink: 0;
+}
+.fmt-sq { height: 1080px; }
+.fmt-story { height: 1920px; }
+
+/* ---------- Layout base ---------- */
+.slide .inner {
+  position: absolute;
+  inset: 72px;
+  display: flex;
+  flex-direction: column;
+}
+.fmt-story .inner { inset: 230px 72px 300px 72px; }
+
+/* ---------- Tipografía ---------- */
+.t-label {
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: 12px;
+}
+.t-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 96px;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.fmt-sq .t-title { font-size: 84px; }
+.fmt-story .t-title { font-size: 108px; }
+.t-sub {
+  font-family: var(--font-body);
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--grey);
+  margin-bottom: 32px;
+}
+.fmt-sq .t-sub { font-size: 30px; }
+.t-small {
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--grey);
+}
+
+/* ---------- Stickers ---------- */
+.sticker {
+  display: inline-block;
+  padding: 10px 24px;
+  border: var(--bw) solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(-3deg);
+  margin-bottom: 20px;
+}
+.sticker--sun { background: var(--sun); color: var(--ink); }
+.sticker--sky { background: var(--sky); color: #fff; }
+.sticker--pink { background: var(--pink); color: #fff; }
+.sticker--lime { background: var(--lime); color: var(--ink); }
+.sticker--orange { background: var(--orange); color: #fff; }
+.sticker--paper { background: var(--paper); color: var(--ink); }
+
+/* ---------- Price pill ---------- */
+.price-pill {
+  display: inline-block;
+  padding: 12px 32px;
+  border: var(--bw) solid var(--ink);
+  border-radius: 999px;
+  background: var(--sky);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 40px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.price-old {
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--grey);
+  text-decoration: line-through;
+  margin-left: 16px;
+}
+
+/* ---------- Product frame ---------- */
+.frame {
+  position: relative;
+  background: #f3f4f6;
+  border: var(--bw) solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--grey);
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 600;
+}
+.frame img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: var(--bw) solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.foot-brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+.foot-note {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--grey);
+}
+
+/* ---------- Logo plate ---------- */
+.logo-plate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: #F2F2F2;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+}
+.logo-plate img { height: 36px; width: auto; }
+
+/* ---------- Decorative ---------- */
+.geo-accent {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40%;
+  height: 8px;
+  background: var(--sky);
+  transform: skewX(-30deg);
+}
+
+/* ---------- Head / logo row ---------- */
+.head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+/* ---------- List ---------- */
+.list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.list li {
+  font-family: var(--font-body);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--ink);
+  padding-left: 40px;
+  position: relative;
+}
+.list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  background: var(--sky);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+}
+.fmt-sq .list li { font-size: 26px; }
+
+/* ---------- Responsive preview ---------- */
+@media (max-width: 600px) {
+  .sheet { padding: 12px; gap: 12px; }
+}
