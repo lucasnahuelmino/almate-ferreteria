@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <rect width="1080" height="1080" fill="#fff7ee"/>
+  <rect x="40" y="40" width="1000" height="1000" rx="40" fill="#ffffff" stroke="#1c1b22" stroke-width="6"/>
+
+  <!-- sticker badge -->
+  <g transform="translate(120,120) rotate(-6)">
+    <rect x="0" y="0" width="260" height="70" rx="35" fill="#fbbf24" stroke="#1c1b22" stroke-width="4"/>
+    <text x="130" y="46" font-family="Arial, sans-serif" font-size="26" font-weight="800" text-anchor="middle" fill="#1c1b22" letter-spacing="2">NUEVO</text>
+  </g>
+
+  <!-- product image placeholder -->
+  <rect x="140" y="220" width="800" height="520" rx="32" fill="#f3f4f6" stroke="#1c1b22" stroke-width="4" stroke-dasharray="12 8"/>
+  <text x="540" y="490" font-family="Arial, sans-serif" font-size="32" font-weight="700" text-anchor="middle" fill="#5f5a7a">Tu foto de producto aquí</text>
+  <text x="540" y="535" font-family="Arial, sans-serif" font-size="20" text-anchor="middle" fill="#5f5a7a">1080 × 720 px recomendado</text>
+
+  <!-- name -->
+  <text x="140" y="810" font-family="Arial, sans-serif" font-size="44" font-weight="900" fill="#1c1b22">Nombre del producto</text>
+  <!-- sku -->
+  <text x="140" y="855" font-family="Arial, sans-serif" font-size="22" font-weight="600" fill="#5f5a7a">Cód. 0000</text>
+  <!-- price -->
+  <rect x="140" y="880" width="260" height="70" rx="35" fill="#3b82f6" stroke="#1c1b22" stroke-width="4"/>
+  <text x="270" y="928" font-family="Arial, sans-serif" font-size="34" font-weight="900" text-anchor="middle" fill="#ffffff">$ 00.000</text>
+
+  <!-- CTA -->
+  <text x="940" y="925" font-family="Arial, sans-serif" font-size="26" font-weight="800" text-anchor="end" fill="#1c1b22">Consultá por WhatsApp →</text>
+
+  <!-- footer brand -->
+  <line x1="140" y1="980" x2="940" y2="980" stroke="#1c1b22" stroke-width="3"/>
+  <text x="140" y="1025" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#1c1b22" letter-spacing="3">ALMATE</text>
+  <text x="940" y="1025" font-family="Arial, sans-serif" font-size="18" text-anchor="end" fill="#5f5a7a">Desarrollado por ALMATE · Soluciones digitales</text>
+</svg>

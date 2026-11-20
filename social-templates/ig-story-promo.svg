@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <rect width="1080" height="1920" fill="#1c1b22"/>
+  <rect x="40" y="40" width="1000" height="1840" rx="48" fill="#fff7ee"/>
+
+  <!-- top sticker -->
+  <g transform="translate(80,120) rotate(-4)">
+    <rect x="0" y="0" width="340" height="80" rx="40" fill="#ff4d6d" stroke="#1c1b22" stroke-width="4"/>
+    <text x="170" y="54" font-family="Arial, sans-serif" font-size="30" font-weight="800" text-anchor="middle" fill="#ffffff" letter-spacing="2">OFERTA</text>
+  </g>
+
+  <!-- hero text -->
+  <text x="80" y="320" font-family="Arial, sans-serif" font-size="78" font-weight="900" fill="#1c1b22">Un poco de</text>
+  <text x="80" y="410" font-family="Arial, sans-serif" font-size="78" font-weight="900" fill="#1c1b22">todo. <tspan fill="#3b82f6">Todo</tspan></text>
+  <text x="80" y="500" font-family="Arial, sans-serif" font-size="78" font-weight="900" fill="#ff6b35">con onda.</text>
+
+  <!-- product image placeholder -->
+  <rect x="80" y="560" width="920" height="620" rx="40" fill="#f3f4f6" stroke="#1c1b22" stroke-width="5" stroke-dasharray="14 10"/>
+  <text x="540" y="880" font-family="Arial, sans-serif" font-size="34" font-weight="700" text-anchor="middle" fill="#5f5a7a">Tu foto de producto aquí</text>
+
+  <!-- price block -->
+  <rect x="80" y="1220" width="420" height="90" rx="45" fill="#fbbf24" stroke="#1c1b22" stroke-width="4"/>
+  <text x="290" y="1278" font-family="Arial, sans-serif" font-size="40" font-weight="900" text-anchor="middle" fill="#1c1b22">$ 00.000</text>
+  <text x="520" y="1278" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#5f5a7a" text-decoration="line-through">$ 00.000</text>
+
+  <!-- product name -->
+  <text x="80" y="1380" font-family="Arial, sans-serif" font-size="46" font-weight="900" fill="#1c1b22">Nombre del producto</text>
+  <text x="80" y="1430" font-family="Arial, sans-serif" font-size="24" font-weight="600" fill="#5f5a7a">Cód. 0000 · Consultá disponibilidad</text>
+
+  <!-- CTA -->
+  <rect x="80" y="1520" width="920" height="90" rx="45" fill="#3b82f6" stroke="#1c1b22" stroke-width="4"/>
+  <text x="540" y="1578" font-family="Arial, sans-serif" font-size="34" font-weight="900" text-anchor="middle" fill="#ffffff">Consultá por WhatsApp →</text>
+
+  <!-- footer -->
+  <text x="80" y="1700" font-family="Arial, sans-serif" font-size="26" font-weight="900" fill="#1c1b22" letter-spacing="3">ALMATE</text>
+  <text x="80" y="1740" font-family="Arial, sans-serif" font-size="18" fill="#5f5a7a">Un poco de todo. Todo con onda.</text>
+  <text x="1000" y="1840" font-family="Arial, sans-serif" font-size="16" text-anchor="end" fill="#5f5a7a">Desarrollado por ALMATE · Soluciones digitales</text>
+</svg>

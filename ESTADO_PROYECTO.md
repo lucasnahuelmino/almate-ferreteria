@@ -143,3 +143,8 @@ Revisar en el navegador real (Chrome + Safari/iOS), correr Lighthouse y adaptar 
 - ALMATE Assistant Core integrado (`almate-assistant.js/css/config.js`).
 - Pruebas: core 19/19, browser 18/18, sync-seo OK, node --check OK.
 - Pendientes: reemplazar imágenes por fotos propias con derechos; validar en dispositivos físicos; revisar textos de contacto reales.
+
+## Plantillas para redes sociales (ALMATE) — 2026-11-19
+- Carpeta `social-templates/` con plantillas SVG editables: post de producto, post por categoría, historia de Instagram con oferta, estado de WhatsApp.
+- Identidad visual ALMATE aplicada (paleta vibrante, stickers, contornos duros).
+- Guía de uso en `social-templates/README.md`.
