@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALMATE · Social v2 · Producto</title>
+  <link rel="stylesheet" href="social.css">
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("../demo-polirrubro/assets/fonts/bricolage-grotesque-latin-wght-normal.woff2") format("woff2"); font-weight: 400 900; }
+    @font-face { font-family: "DM Sans"; src: url("../demo-polirrubro/assets/fonts/dm-sans-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+    @font-face { font-family: "DM Sans"; src: url("../demo-polirrubro/assets/fonts/dm-sans-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+    /* v2: color block centrado */
+    .slide.v2 { background: var(--sky); color: #fff; }
+    .slide.v2 .inner { align-items: center; text-align: center; justify-content: center; }
+    .slide.v2 .t-title { color: #fff; font-size: 108px; }
+    .slide.v2 .t-sub { color: rgba(255,255,255,.85); }
+    .slide.v2 .t-label { color: rgba(255,255,255,.7); }
+    .slide.v2 .logo-plate { background: #fff; }
+    .slide.v2 .frame { background: rgba(255,255,255,.15); border-color: #fff; color: rgba(255,255,255,.7); }
+    .slide.v2 .price-pill { background: var(--sun); color: var(--ink); }
+    .slide.v2 .price-old { color: rgba(255,255,255,.7); }
+    .slide.v2 .foot { border-top-color: rgba(255,255,255,.3); }
+    .slide.v2 .foot-brand, .slide.v2 .foot-note { color: #fff; }
+    .slide.v2 .sticker { transform: rotate(0deg); }
+    .slide.v2 .geo-accent { background: var(--sun); }
+  </style>
+</head>
+<body>
+<div class="sheet">
+  <article class="slide v2" id="producto-v2-feed">
+    <div class="inner">
+      <div class="logo-plate" style="margin-bottom:24px;"><img src="../img/logo_local.png" alt="ALMATE"></div>
+      <span class="sticker sticker--sun">NUEVO</span>
+      <h1 class="t-title">Nombre del producto</h1>
+      <p class="t-sub">Descripción corta del producto en una o dos líneas.</p>
+      <div class="frame" style="width: 70%; height: 360px; margin-bottom: 24px;">Tu foto de producto aquí</div>
+      <div style="display:flex; align-items:baseline; gap: 16px; margin-bottom: 24px; justify-content:center;">
+        <span class="price-pill">$ 00.000</span>
+        <span class="price-old">$ 00.000</span>
+      </div>
+      <p class="t-small" style="color:rgba(255,255,255,.7);">Cód. 0000 · Consultá disponibilidad</p>
+      <div class="foot" style="width:100%;">
+        <span class="foot-brand">ALMATE</span>
+        <span class="foot-note">Consultá por WhatsApp →</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="slide v2 fmt-sq" id="producto-v2-sq">
+    <div class="inner">
+      <div class="logo-plate" style="margin-bottom:20px;"><img src="../img/logo_local.png" alt="ALMATE"></div>
+      <span class="sticker sticker--sun">NUEVO</span>
+      <h1 class="t-title">Nombre del producto</h1>
+      <p class="t-sub">Descripción corta en una línea.</p>
+      <div class="frame" style="width: 70%; height: 280px; margin-bottom: 20px;">Tu foto aquí</div>
+      <div style="display:flex; align-items:baseline; gap: 16px; margin-bottom: 16px; justify-content:center;">
+        <span class="price-pill">$ 00.000</span>
+      </div>
+      <p class="t-small" style="color:rgba(255,255,255,.7);">Cód. 0000</p>
+      <div class="foot" style="width:100%;">
+        <span class="foot-brand">ALMATE</span>
+        <span class="foot-note">Consultá →</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="slide v2 fmt-story" id="producto-v2-story">
+    <div class="inner">
+      <div class="logo-plate" style="margin-bottom:24px;"><img src="../img/logo_local.png" alt="ALMATE"></div>
+      <span class="sticker sticker--sun">NUEVO</span>
+      <h1 class="t-title">Nombre del producto</h1>
+      <p class="t-sub">Descripción corta del producto en un par de líneas.</p>
+      <div class="frame" style="width: 80%; height: 480px; margin-bottom: 24px;">Tu foto de producto aquí</div>
+      <div style="display:flex; align-items:baseline; gap: 16px; margin-bottom: 24px; justify-content:center;">
+        <span class="price-pill">$ 00.000</span>
+        <span class="price-old">$ 00.000</span>
+      </div>
+      <p class="t-small" style="color:rgba(255,255,255,.7);">Cód. 0000 · Consultá disponibilidad</p>
+      <div class="foot" style="width:100%;">
+        <span class="foot-brand">ALMATE</span>
+        <span class="foot-note">Respondé a esta historia para consultar</span>
+      </div>
+    </div>
+  </article>
+</div>
+</body>
+</html>

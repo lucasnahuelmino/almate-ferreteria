@@ -4,6 +4,10 @@ Complementa las plantillas SVG en `../social-templates/`. Esta versión usa HTML
 
 ## Estructura
 
+Versiones disponibles: base (sin sufijo), v2 (color block centrado), v3 (minimal), v4 (sticker collage).
+Cada familia tiene las 4 versiones: `producto.html`, `producto-v2.html`, `producto-v3.html`, `producto-v4.html` (y lo mismo para oferta, novedad, categoria).
+
+
 ```
 social/
 ├── social.css          # estilos compartidos (formatos, tipografía, componentes)
